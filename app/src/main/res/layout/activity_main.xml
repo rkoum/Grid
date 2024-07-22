@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/white">
 
     <ImageButton
         android:id="@+id/imageButton9"
@@ -69,7 +70,8 @@
         app:layout_constraintHorizontal_bias="0.678"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintVertical_bias="0.372"
+        />
 
     <ImageButton
         android:id="@+id/imageButton4"
@@ -95,9 +97,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintBottom_toTopOf="@id/imageButton1"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="-15dp" />
 
     <ImageButton
         android:id="@+id/imageButton1"
@@ -137,4 +140,81 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:layout_constraintVertical_bias="0.216" />
+
+    <TextView
+        android:id="@+id/conditionTextView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton1"
+        app:layout_constraintEnd_toStartOf="@+id/conditionTextView2"
+        app:layout_constraintHorizontal_bias="0.73"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/searchView"
+        app:layout_constraintVertical_bias="1.0"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/conditionTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
+        app:layout_constraintEnd_toEndOf="@+id/suggestionsListView"
+        app:layout_constraintHorizontal_bias="0.668"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/searchView"
+        app:layout_constraintVertical_bias="1.0"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/conditionTextView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
+        app:layout_constraintEnd_toEndOf="@+id/suggestionsListView"
+        app:layout_constraintHorizontal_bias="0.728"
+        app:layout_constraintStart_toEndOf="@+id/conditionTextView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/conditionTextViewB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/conditionTextViewC"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/suggestionsListView"
+        app:layout_constraintVertical_bias="0.764"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/conditionTextViewA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/conditionTextViewB"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton1"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/suggestionsListView"
+        app:layout_constraintVertical_bias="0.657"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/conditionTextViewC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="332dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton7"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

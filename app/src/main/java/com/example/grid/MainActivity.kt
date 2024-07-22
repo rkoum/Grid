@@ -6,16 +6,19 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.ToolbarWidgetWrapper
 import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var dbHelper: MyDatabaseHelper
     private lateinit var searchView: SearchView
     private lateinit var suggestionsListView: ListView
@@ -29,16 +32,33 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageButton7: ImageButton
     private lateinit var imageButton8: ImageButton
     private lateinit var imageButton9: ImageButton
+
+    private lateinit var conditionTextView1: TextView
+    private lateinit var conditionTextView2: TextView
+    private lateinit var conditionTextView3: TextView
+    private lateinit var conditionTextViewA: TextView
+    private lateinit var conditionTextViewB: TextView
+    private lateinit var conditionTextViewC: TextView
+
+    private val foundPlayers: MutableList<String> = mutableListOf()
+
+    // Define initial conditions
+    private var condition1 = "REB = 3"
+    private var condition2 = "AST > 2"
+    private var condition3 = "REB = 4"
+    private var conditionA = "REB = 3"
+    private var conditionB = "PTS < 11"
+    private var conditionC = "TEAM = \"Olympiacos\""
     private var queries: List<String> = listOf(
-        "SELECT * FROM Players WHERE NAME = ? AND REB = 3",
-        "SELECT * FROM Players WHERE NAME = ? AND REB = 4",
-        "SELECT * FROM Players WHERE NAME = ? AND REB = 5",
-        "SELECT * FROM Players WHERE NAME = ? AND REB > 6",
-        "SELECT * FROM Players WHERE NAME = ? AND TO = 3",
-        "SELECT * FROM Players WHERE NAME = ? AND TEAM = \"Olympiacos\"",
-        "SELECT * FROM Players WHERE NAME = ? AND TEAM = \"Panathinaikos\"",
-        "SELECT * FROM Players WHERE NAME = ? AND TEAM = \"Aris\"",
-        "SELECT * FROM Players WHERE NAME = ? AND REB = 9"
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionA} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionA} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition3} AND ${conditionA} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionB} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionB} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition3} AND ${conditionB} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionC} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionC} ",
+        "SELECT * FROM Players WHERE NAME = ? AND ${condition3} AND ${conditionC} "
     )
 
     private var currentPage = 0
@@ -47,6 +67,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.hide()
         dbHelper = MyDatabaseHelper(this)
 
         searchView = findViewById(R.id.searchView)
@@ -60,6 +81,27 @@ class MainActivity : AppCompatActivity() {
         imageButton7 = findViewById(R.id.imageButton7)
         imageButton8 = findViewById(R.id.imageButton8)
         imageButton9 = findViewById(R.id.imageButton9)
+
+        // Find TextViews by their ID
+        conditionTextView1 = findViewById(R.id.conditionTextView1)
+        conditionTextView2 = findViewById(R.id.conditionTextView2)
+        conditionTextView3 = findViewById(R.id.conditionTextView3)
+        conditionTextViewA = findViewById(R.id.conditionTextViewA)
+        conditionTextViewB = findViewById(R.id.conditionTextViewB)
+        conditionTextViewC = findViewById(R.id.conditionTextViewC)
+
+        // Update TextViews with current conditions
+        updateConditionTextViews()
+    }
+
+    private fun updateConditionTextViews() {
+        conditionTextView1.text = condition1
+        conditionTextView2.text = condition2
+        conditionTextView3.text = condition3
+        conditionTextViewA.text = conditionA
+        conditionTextViewB.text = conditionB
+        conditionTextViewC.text = conditionC
+
 
         adapter = PlayerCursorAdapter(this, null)
         suggestionsListView.adapter = adapter
@@ -151,10 +193,14 @@ class MainActivity : AppCompatActivity() {
         val db = dbHelper.readableDatabase
         val offset = currentPage * pageSize
         val sql = "SELECT * FROM Players WHERE NAME LIKE ? LIMIT ? OFFSET ?"
-        Log.d("MainActivity", "Executing query: $sql with parameters: [$query%, $pageSize, $offset]")
+        Log.d(
+            "MainActivity",
+            "Executing query: $sql with parameters: [%$query%, $pageSize, $offset]"
+        )
 
         try {
-            val cursor: Cursor? = db.rawQuery(sql, arrayOf("$query%", pageSize.toString(), offset.toString()))
+            val cursor: Cursor? =
+                db.rawQuery(sql, arrayOf("%$query%", pageSize.toString(), offset.toString()))
             if (cursor != null) {
                 Log.d("MainActivity", "Cursor count: ${cursor.count}")
                 adapter.changeCursor(cursor)
@@ -168,7 +214,8 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("MainActivity", "Exception occurred while updating suggestions: ${e.message}")
             e.printStackTrace()
-            Toast.makeText(this, "An error occurred while updating suggestions", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "An error occurred while updating suggestions", Toast.LENGTH_SHORT)
+                .show()
         } finally {
             db.close() // Ensure database is closed after use
             Log.d("MainActivity", "Database closed")
@@ -191,16 +238,29 @@ class MainActivity : AppCompatActivity() {
                 val imageUrlIndex = cursor.getColumnIndexOrThrow("IMAGE_URL")
                 val playerName = cursor.getString(nameIndex)
                 val imageUrl = cursor.getString(imageUrlIndex)
-                Toast.makeText(this, "Player found: $playerName", Toast.LENGTH_SHORT).show()
-                Log.d("MainActivity", "Player found: $playerName")
 
-                // Load image into ImageButton using Glide
-                Glide.with(this)
-                    .load(imageUrl)
-                    // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
-                    // .error(R.drawable.error_image) // Optional: error image
-                    .into(imageButton)
+                // Check if player is already in the list
+                if (!foundPlayers.contains(playerName)) {
+                    // Add playerName to the list
+                    foundPlayers.add(playerName)
+
+                    // Load image into ImageButton using Glide
+                    Glide.with(this)
+                        .load(imageUrl)
+                        // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
+                        // .error(R.drawable.error_image) // Optional: error image
+                        .into(imageButton)
+                    searchView.setQuery("", false)
+                    searchView.clearFocus()
+                } else {
+                    Toast.makeText(this, "Player already in Grid!: $playerName", Toast.LENGTH_SHORT)
+                        .show()
+                    Log.d("MainActivity", "Player already in list: $playerName")
+                }
+
             } else {
+                searchView.setQuery("", false)
+                searchView.clearFocus()
                 Toast.makeText(this, "Player not found", Toast.LENGTH_SHORT).show()
                 Log.d("MainActivity", "Player not found")
             }
@@ -208,7 +268,11 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("MainActivity", "Exception occurred while searching for player: ${e.message}")
             e.printStackTrace()
-            Toast.makeText(this, "An error occurred while searching for the player", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "An error occurred while searching for the player",
+                Toast.LENGTH_SHORT
+            ).show()
         } finally {
             db.close() // Ensure database is closed after use
             Log.d("MainActivity", "Database closed")
