@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity() {
     private val foundPlayers: MutableList<String> = mutableListOf()
 
     // Define initial conditions
-    private var condition1 = "REB = 3"
+    private var condition1 = "REB > 2"
     private var condition2 = "AST > 2"
-    private var condition3 = "REB = 4"
-    private var conditionA = "REB = 3"
-    private var conditionB = "PTS < 11"
-    private var conditionC = "TEAM = \"Olympiacos\""
+    private var condition3 = "REB < 20"
+    private var conditionA = "PTS > 8"
+    private var conditionB = "PTS > 4"
+    private var conditionC = "BLK < 0.5 "
     private var queries: List<String> = listOf(
         "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionA} ",
         "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionA} ",
@@ -253,6 +253,8 @@ class MainActivity : AppCompatActivity() {
                     searchView.setQuery("", false)
                     searchView.clearFocus()
                 } else {
+                    searchView.setQuery("", false)
+                    searchView.clearFocus()
                     Toast.makeText(this, "Player already in Grid!: $playerName", Toast.LENGTH_SHORT)
                         .show()
                     Log.d("MainActivity", "Player already in list: $playerName")
@@ -279,4 +281,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-//test123
+//TODO images or text <-> textView
+//=TODO win if 9
+//TODO percentages
+//TODO rng conditions
+//TODO UI
+
