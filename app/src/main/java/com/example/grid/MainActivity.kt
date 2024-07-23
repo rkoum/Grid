@@ -46,12 +46,12 @@ class MainActivity : AppCompatActivity() {
     private val foundPlayers: MutableList<String> = mutableListOf()
 
     // Define initial conditions
-    private var condition1 = "REB > 2"
+    private var condition1 = "REB > 3"
     private var condition2 = "AST > 2"
-    private var condition3 = "REB < 20"
-    private var conditionA = "PTS > 8"
-    private var conditionB = "PTS > 4"
-    private var conditionC = "BLK < 0.5 "
+    private var condition3 = "REB < 7"
+    private var conditionA = "AST > 8"
+    private var conditionB = "TO > 0.5"
+    private var conditionC = "BLK < 1 "
     private var queries: List<String> = listOf(
         "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionA} ",
         "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionA} ",
