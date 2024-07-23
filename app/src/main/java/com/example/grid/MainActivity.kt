@@ -3,6 +3,7 @@ package com.example.grid
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -16,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.widget.ToolbarWidgetWrapper
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColor
 import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
@@ -72,6 +75,11 @@ class MainActivity : AppCompatActivity() {
 
         searchView = findViewById(R.id.searchView)
         suggestionsListView = findViewById(R.id.suggestionsListView)
+        searchView.setBackgroundColor(Color.parseColor("#021526"))
+
+        val searchTextView = searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
+        searchTextView.setTextColor(Color.WHITE) // Set your desired text color
+
         imageButton1 = findViewById(R.id.imageButton1)
         imageButton2 = findViewById(R.id.imageButton2)
         imageButton3 = findViewById(R.id.imageButton3)
