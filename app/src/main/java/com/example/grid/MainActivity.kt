@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     // Define initial conditions
     private var condition1 = "PTS > 0"
     private var condition2 = "REB >= 0"
-    private var condition3 = "POS = 'PG'"
+    private var condition3 = "AST > 0"
     private var conditionA = "AST > 0"
     private var conditionB = "STL > 0"       //"\"TO\" >= 2"
     private var conditionC = "BLK > 0"
@@ -347,4 +347,5 @@ class MainActivity : AppCompatActivity() {
 //TODO percentages
 //TODO rng conditions
 //TODO UI
-
+//TODO position in querries
+//TODO 2 players same square win with 8/9fix
