@@ -20,6 +20,7 @@ import androidx.appcompat.widget.ToolbarWidgetWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
 import com.bumptech.glide.Glide
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var dbHelper: MyDatabaseHelper
@@ -46,13 +47,20 @@ class MainActivity : AppCompatActivity() {
 
     private val foundPlayers: MutableList<String> = mutableListOf()
 
+    val randomPTS = Random.nextInt(0, 15)
+    val randomREB = Random.nextInt(0, 6)
+    val randomAST = Random.nextInt(0, 4)
+    val randomBLK = Random.nextInt(0, 1)
+    val randomSTL = Random.nextInt(0, 1)
+    val positions = listOf("PG ", "SG ", "SF ", "PF ", "C ")
+
     // Define initial conditions
-    private var condition1 = "PTS > 0"
-    private var condition2 = "REB >= 0"
-    private var condition3 = "AST > 0"
-    private var conditionA = "AST > 0"
-    private var conditionB = "STL > 0"       //"\"TO\" >= 2"
-    private var conditionC = "BLK > 0"
+    private var condition1 = "PTS > $randomPTS"
+    private var condition2 = "REB >= $randomREB"
+    private var condition3 = "AST > $randomAST"
+    private var conditionA = "AST > $randomAST"
+    private var conditionB = "STL > $randomSTL"       //"\"TO\" >= 2"
+    private var conditionC = "POS = '${positions.random()}'"
     private var queries: List<String> = listOf(
         "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionA} ",
         "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionA} ",
@@ -66,13 +74,29 @@ class MainActivity : AppCompatActivity() {
     )
 
     val conditionMap: Map<String, String> = mapOf(
-        "PTS > 0" to "Over 0 Points",
-        "REB >= 0" to "At least 0 Rebounds",
+        "PTS > $randomPTS" to "Over $randomPTS Points",
+        "PTS < $randomPTS" to "Under $randomPTS Points",
+        "PTS >= $randomPTS" to "At least $randomPTS Points",
+        "REB > $randomREB" to "Over $randomREB Rebounds",
+        "REB < $randomREB" to "Under $randomREB Rebounds",
+        "REB >= $randomREB" to "At least $randomREB Rebounds",
+        "AST > $randomAST" to "Over $randomAST Assists",
+        "AST < $randomAST" to "Under $randomAST Assists",
+        "AST >= $randomAST" to "At least $randomAST Assists",
+        "BLK > $randomBLK" to "Over $randomBLK Blocks",
+        "BLK < $randomBLK" to "Under $randomBLK Blocks",
+        "BLK >= $randomBLK" to "At least $randomBLK Blocks",
+        "STL > $randomSTL" to "Over $randomSTL Steal",
+        "STL < $randomSTL" to "Under $randomSTL Steal",
+        "STL >= $randomSTL" to "At least $randomSTL Steal",
+        "POS = 'PG '" to "Point Guard",
+        "POS = 'SG '" to "Shooting Guard",
+        "POS = 'SF '" to "Small Forward",
+        "POS = 'PF '" to "Power Forward",
+        "POS = 'C '" to "Center",
+
+
         "\"TO\" >= 0" to "At least 0 TO",
-        "BLK > 0" to "Over 0 Block",
-        "POS = 'PG'" to "Point Guard",
-        "STL > 0" to "Over 0 Steal",
-        "AST > 0" to "Over 0 Assist"
 
     )
 
@@ -342,10 +366,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-//TODO images or text <-> textView
-//=TODO win if 9
-//TODO percentages
+
 //TODO rng conditions
-//TODO UI
-//TODO position in querries
 //TODO 2 players same square win with 8/9fix
+//TODO UI -> search and X icon white
+//TODO images or text <-> textView
+//TODO labels
+//TODO percentages
