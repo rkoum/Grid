@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageButton7: ImageButton
     private lateinit var imageButton8: ImageButton
     private lateinit var imageButton9: ImageButton
+    private lateinit var replayButton: ImageButton
 
     private lateinit var conditionTextView1: TextView
     private lateinit var conditionTextView2: TextView
@@ -46,12 +47,12 @@ class MainActivity : AppCompatActivity() {
     private val foundPlayers: MutableList<String> = mutableListOf()
 
     // Define initial conditions
-    private var condition1 = "REB > 3"
-    private var condition2 = "AST > 2"
-    private var condition3 = "REB < 7"
-    private var conditionA = "AST > 8"
-    private var conditionB = "TO > 0.5"
-    private var conditionC = "BLK < 1 "
+    private var condition1 = "PTS > 0"
+    private var condition2 = "REB >= 0"
+    private var condition3 = "POS = 'PG'"
+    private var conditionA = "AST > 0"
+    private var conditionB = "STL > 0"       //"\"TO\" >= 2"
+    private var conditionC = "BLK > 0"
     private var queries: List<String> = listOf(
         "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionA} ",
         "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionA} ",
@@ -62,6 +63,17 @@ class MainActivity : AppCompatActivity() {
         "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionC} ",
         "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionC} ",
         "SELECT * FROM Players WHERE NAME = ? AND ${condition3} AND ${conditionC} "
+    )
+
+    val conditionMap: Map<String, String> = mapOf(
+        "PTS > 0" to "Over 0 Points",
+        "REB >= 0" to "At least 0 Rebounds",
+        "\"TO\" >= 0" to "At least 0 TO",
+        "BLK > 0" to "Over 0 Block",
+        "POS = 'PG'" to "Point Guard",
+        "STL > 0" to "Over 0 Steal",
+        "AST > 0" to "Over 0 Assist"
+
     )
 
     private var currentPage = 0
@@ -77,7 +89,8 @@ class MainActivity : AppCompatActivity() {
         suggestionsListView = findViewById(R.id.suggestionsListView)
         searchView.setBackgroundColor(Color.parseColor("#021526"))
 
-        val searchTextView = searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
+        val searchTextView =
+            searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
         searchTextView.setTextColor(Color.WHITE) // Set your desired text color
 
         imageButton1 = findViewById(R.id.imageButton1)
@@ -89,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         imageButton7 = findViewById(R.id.imageButton7)
         imageButton8 = findViewById(R.id.imageButton8)
         imageButton9 = findViewById(R.id.imageButton9)
+        replayButton = findViewById(R.id.replayButton)
 
         // Find TextViews by their ID
         conditionTextView1 = findViewById(R.id.conditionTextView1)
@@ -98,17 +112,18 @@ class MainActivity : AppCompatActivity() {
         conditionTextViewB = findViewById(R.id.conditionTextViewB)
         conditionTextViewC = findViewById(R.id.conditionTextViewC)
 
+
         // Update TextViews with current conditions
         updateConditionTextViews()
     }
 
     private fun updateConditionTextViews() {
-        conditionTextView1.text = condition1
-        conditionTextView2.text = condition2
-        conditionTextView3.text = condition3
-        conditionTextViewA.text = conditionA
-        conditionTextViewB.text = conditionB
-        conditionTextViewC.text = conditionC
+        conditionTextView1.text = conditionMap[condition1] ?: "Unknown condition"
+        conditionTextView2.text = conditionMap[condition2] ?: "Unknown condition"
+        conditionTextView3.text = conditionMap[condition3] ?: "Unknown condition"
+        conditionTextViewA.text = conditionMap[conditionA] ?: "Unknown condition"
+        conditionTextViewB.text = conditionMap[conditionB] ?: "Unknown condition"
+        conditionTextViewC.text = conditionMap[conditionC] ?: "Unknown condition"
 
 
         adapter = PlayerCursorAdapter(this, null)
@@ -260,6 +275,44 @@ class MainActivity : AppCompatActivity() {
                         .into(imageButton)
                     searchView.setQuery("", false)
                     searchView.clearFocus()
+                    if (foundPlayers.size == 9) {
+                        Toast.makeText(this, "YOU WON", Toast.LENGTH_SHORT).show()
+                        imageButton1.isEnabled = false
+                        imageButton2.isEnabled = false
+                        imageButton3.isEnabled = false
+                        imageButton4.isEnabled = false
+                        imageButton5.isEnabled = false
+                        imageButton6.isEnabled = false
+                        imageButton7.isEnabled = false
+                        imageButton8.isEnabled = false
+                        imageButton9.isEnabled = false
+                        replayButton.visibility = ImageButton.VISIBLE
+                        replayButton.isEnabled = true
+
+                        replayButton.setOnClickListener {
+                            foundPlayers.clear()
+                            imageButton1.isEnabled = true
+                            imageButton2.isEnabled = true
+                            imageButton3.isEnabled = true
+                            imageButton4.isEnabled = true
+                            imageButton5.isEnabled = true
+                            imageButton6.isEnabled = true
+                            imageButton7.isEnabled = true
+                            imageButton8.isEnabled = true
+                            imageButton9.isEnabled = true
+                            Glide.with(this).clear(imageButton1)
+                            Glide.with(this).clear(imageButton2)
+                            Glide.with(this).clear(imageButton3)
+                            Glide.with(this).clear(imageButton4)
+                            Glide.with(this).clear(imageButton5)
+                            Glide.with(this).clear(imageButton6)
+                            Glide.with(this).clear(imageButton7)
+                            Glide.with(this).clear(imageButton8)
+                            Glide.with(this).clear(imageButton9)
+                            replayButton.visibility = ImageButton.INVISIBLE
+                            replayButton.isEnabled = false
+                        }
+                    }
                 } else {
                     searchView.setQuery("", false)
                     searchView.clearFocus()

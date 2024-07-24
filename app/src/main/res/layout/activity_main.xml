@@ -34,11 +34,11 @@
         android:alignmentMode="alignMargins"
         android:columnCount="4"
         android:rowCount="4"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintVertical_bias="0.3">
 
         <!-- First Row -->
@@ -51,14 +51,14 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button1"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button1"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -68,14 +68,14 @@
             android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button2"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button2"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/imageButton3"
@@ -85,14 +85,14 @@
             android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button3"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button3"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <!-- Second Row -->
 
@@ -104,14 +104,14 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button4"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button4"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/imageButton5"
@@ -121,14 +121,14 @@
             android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button5"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button5"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/imageButton6"
@@ -138,14 +138,14 @@
             android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button6"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button6"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <!-- Third Row -->
 
@@ -157,14 +157,14 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button7"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button7"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/imageButton8"
@@ -174,14 +174,14 @@
             android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button8"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button8"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/imageButton9"
@@ -191,14 +191,14 @@
             android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
-            android:contentDescription="@string/button9"
-            android:scaleType="fitCenter"
+            android:layout_margin="1dp"
+            android:background="@drawable/button_outline"
             android:backgroundTint="#021526"
+            android:contentDescription="@string/button9"
+
             android:padding="10dp"
 
-            android:layout_margin="1dp"
-
-            android:background="@drawable/button_outline"/>
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/conditionTextView1"
@@ -210,9 +210,9 @@
             android:layout_columnWeight="1"
             android:gravity="center"
             android:text="Condition 1"
-            android:textStyle="bold"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white"/>
+            android:textStyle="bold" />
 
         <!-- Fourth Row -->
 
@@ -226,9 +226,9 @@
             android:layout_columnWeight="1"
             android:gravity="center"
             android:text="Condition 2"
-            android:textStyle="bold"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/conditionTextView3"
@@ -240,9 +240,9 @@
             android:layout_columnWeight="1"
             android:gravity="center"
             android:text="Condition 3"
-            android:textStyle="bold"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/conditionTextViewA"
@@ -254,9 +254,9 @@
             android:layout_columnWeight="1"
             android:gravity="center"
             android:text="Condition A"
-            android:textStyle="bold"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/conditionTextViewB"
@@ -268,9 +268,9 @@
             android:layout_columnWeight="1"
             android:gravity="center"
             android:text="Condition B"
-            android:textStyle="bold"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/conditionTextViewC"
@@ -282,11 +282,26 @@
             android:layout_columnWeight="1"
             android:gravity="center"
             android:text="Condition C"
-            android:textStyle="bold"
+            android:textColor="@color/white"
 
-            android:textColor="@color/white"/>
+
+            android:textStyle="bold" />
 
     </GridLayout>
 
+    <ImageButton
+        android:id="@+id/replayButton"
+        android:layout_width="82dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
+        app:srcCompat="@drawable/refresh_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
