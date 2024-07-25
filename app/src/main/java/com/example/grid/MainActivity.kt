@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var suggestionsListView: ListView
     private lateinit var adapter: PlayerCursorAdapter
+
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
     private lateinit var imageButton3: ImageButton
@@ -38,6 +39,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageButton9: ImageButton
     private lateinit var replayButton: ImageButton
 
+    private lateinit var label1: TextView
+    private lateinit var label2: TextView
+    private lateinit var label3: TextView
+    private lateinit var label4: TextView
+    private lateinit var label5: TextView
+    private lateinit var label6: TextView
+    private lateinit var label7: TextView
+    private lateinit var label8: TextView
+    private lateinit var label9: TextView
+
     private lateinit var conditionTextView1: TextView
     private lateinit var conditionTextView2: TextView
     private lateinit var conditionTextView3: TextView
@@ -45,7 +56,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var conditionTextViewB: TextView
     private lateinit var conditionTextViewC: TextView
 
-    private val foundPlayers: MutableList<String> = mutableListOf()
+    private val foundPlayers = MutableList<String?>(9) { null }
+
 
     val randomPTS = Random.nextInt(0, 15)
     val randomREB = Random.nextInt(0, 6)
@@ -98,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
         "\"TO\" >= 0" to "At least 0 TO",
 
-    )
+        )
 
     private var currentPage = 0
     private val pageSize = 10
@@ -126,6 +138,17 @@ class MainActivity : AppCompatActivity() {
         imageButton7 = findViewById(R.id.imageButton7)
         imageButton8 = findViewById(R.id.imageButton8)
         imageButton9 = findViewById(R.id.imageButton9)
+
+        label1 = findViewById(R.id.label1)
+        label2 = findViewById(R.id.label2)
+        label3 = findViewById(R.id.label3)
+        label4 = findViewById(R.id.label4)
+        label5 = findViewById(R.id.label5)
+        label6 = findViewById(R.id.label6)
+        label7 = findViewById(R.id.label7)
+        label8 = findViewById(R.id.label8)
+        label9 = findViewById(R.id.label9)
+
         replayButton = findViewById(R.id.replayButton)
 
         // Find TextViews by their ID
@@ -274,6 +297,30 @@ class MainActivity : AppCompatActivity() {
         query: String,
         imageButton: ImageButton
     ) {
+        var buttonIndexMap = mapOf(
+            imageButton1 to 0,
+            imageButton2 to 1,
+            imageButton3 to 2,
+            imageButton4 to 3,
+            imageButton5 to 4,
+            imageButton6 to 5,
+            imageButton7 to 6,
+            imageButton8 to 7,
+            imageButton9 to 8
+        )
+
+        val buttonToLabel = mapOf(
+            imageButton1 to label1,
+            imageButton2 to label2,
+            imageButton3 to label3,
+            imageButton4 to label4,
+            imageButton5 to label5,
+            imageButton6 to label6,
+            imageButton7 to label7,
+            imageButton8 to label8,
+            imageButton9 to label9
+        )
+
         Log.d("MainActivity", "Searching for player: $playerNameInput")
         val db = dbHelper.readableDatabase
         Log.d("MainActivity", "Executing query: $query with parameter: [$playerNameInput]")
@@ -289,7 +336,10 @@ class MainActivity : AppCompatActivity() {
                 // Check if player is already in the list
                 if (!foundPlayers.contains(playerName)) {
                     // Add playerName to the list
-                    foundPlayers.add(playerName)
+                    val index = buttonIndexMap[imageButton] ?: return
+
+                    // Replace old player with new player at the specified index
+                    foundPlayers[index] = playerName
 
                     // Load image into ImageButton using Glide
                     Glide.with(this)
@@ -297,9 +347,15 @@ class MainActivity : AppCompatActivity() {
                         // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
                         // .error(R.drawable.error_image) // Optional: error image
                         .into(imageButton)
+
+                    val label = buttonToLabel[imageButton]
+                    label?.text = playerName
+                    label?.visibility=View.VISIBLE
+
                     searchView.setQuery("", false)
                     searchView.clearFocus()
-                    if (foundPlayers.size == 9) {
+
+                    if (foundPlayers.all { it != null }) {
                         Toast.makeText(this, "YOU WON", Toast.LENGTH_SHORT).show()
                         imageButton1.isEnabled = false
                         imageButton2.isEnabled = false
@@ -314,7 +370,7 @@ class MainActivity : AppCompatActivity() {
                         replayButton.isEnabled = true
 
                         replayButton.setOnClickListener {
-                            foundPlayers.clear()
+                            foundPlayers.fill(null)
                             imageButton1.isEnabled = true
                             imageButton2.isEnabled = true
                             imageButton3.isEnabled = true
@@ -333,6 +389,30 @@ class MainActivity : AppCompatActivity() {
                             Glide.with(this).clear(imageButton7)
                             Glide.with(this).clear(imageButton8)
                             Glide.with(this).clear(imageButton9)
+
+                            label1.text = "Player Name"
+                            label2.text = "Player Name"
+                            label3.text = "Player Name"
+                            label4.text = "Player Name"
+                            label5.text = "Player Name"
+                            label6.text = "Player Name"
+                            label7.text = "Player Name"
+                            label8.text = "Player Name"
+                            label9.text = "Player Name"
+
+
+                            label1.visibility = View.INVISIBLE
+                            label2.visibility = View.INVISIBLE
+                            label3.visibility = View.INVISIBLE
+                            label4.visibility = View.INVISIBLE
+                            label5.visibility = View.INVISIBLE
+                            label6.visibility = View.INVISIBLE
+                            label7.visibility = View.INVISIBLE
+                            label8.visibility = View.INVISIBLE
+                            label9.visibility = View.INVISIBLE
+
+
+
                             replayButton.visibility = ImageButton.INVISIBLE
                             replayButton.isEnabled = false
                         }
@@ -368,8 +448,6 @@ class MainActivity : AppCompatActivity() {
 }
 
 //TODO rng conditions
-//TODO 2 players same square win with 8/9fix
 //TODO UI -> search and X icon white
 //TODO images or text <-> textView
-//TODO labels
 //TODO percentages

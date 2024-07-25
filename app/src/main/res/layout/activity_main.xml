@@ -4,28 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="#03346E">
+    android:background="#03346E"
+    tools:context=".MainActivity">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/suggestionsListView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintBottom_toTopOf="@+id/gridLayout"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -42,163 +41,314 @@
         app:layout_constraintVertical_bias="0.3">
 
         <!-- First Row -->
-
-        <ImageButton
-            android:id="@+id/imageButton1"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="1"
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button1"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button1"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"
+                />
+        </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton2"
+
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="1"
             android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button2"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button2"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton3"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="1"
             android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button3"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button3"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
 
-        <!-- Second Row -->
-
-        <ImageButton
-            android:id="@+id/imageButton4"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="2"
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button4"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button4"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton5"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="2"
             android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button5"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button5"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton6"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="2"
             android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button6"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button6"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
 
-        <!-- Third Row -->
-
-        <ImageButton
-            android:id="@+id/imageButton7"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="3"
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button7"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button7"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton8"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="3"
             android:layout_rowWeight="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button8"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button8"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton9"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="3"
             android:layout_rowWeight="1"
             android:layout_column="3"
             android:layout_columnWeight="1"
-            android:layout_margin="1dp"
-            android:background="@drawable/button_outline"
-            android:backgroundTint="#021526"
-            android:contentDescription="@string/button9"
+            android:layout_margin="1dp">
 
-            android:padding="10dp"
+            <ImageButton
+                android:id="@+id/imageButton9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_outline"
+                android:backgroundTint="#021526"
+                android:contentDescription="@string/button9"
+                android:padding="10dp"
+                android:scaleType="fitCenter" />
 
-            android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/label9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="#80000000"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Player Name"
+                android:visibility="invisible"
+                android:textAlignment="center"/>
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/conditionTextView1"
@@ -297,11 +447,10 @@
         android:backgroundTint="@android:color/transparent"
         android:scaleType="centerInside"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
-        app:srcCompat="@drawable/refresh_24dp_e8eaed_fill0_wght400_grad0_opsz24"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.65"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
+        app:srcCompat="@drawable/refresh_24dp_e8eaed_fill0_wght400_grad0_opsz24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
