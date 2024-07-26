@@ -59,30 +59,71 @@ class MainActivity : AppCompatActivity() {
     private val foundPlayers = MutableList<String?>(9) { null }
 
 
-    val randomPTS = Random.nextInt(0, 15)
-    val randomREB = Random.nextInt(0, 6)
-    val randomAST = Random.nextInt(0, 4)
-    val randomBLK = Random.nextInt(0, 1)
-    val randomSTL = Random.nextInt(0, 1)
+    val randomPTS = Random.nextInt(1, 15)
+    val randomREB = Random.nextInt(1, 6)
+    val randomAST = Random.nextInt(1, 4)
+    val randomBLK = Random.nextInt(1, 2)
+    val randomSTL = Random.nextInt(1, 2)
     val positions = listOf("PG ", "SG ", "SF ", "PF ", "C ")
 
-    // Define initial conditions
-    private var condition1 = "PTS > $randomPTS"
-    private var condition2 = "REB >= $randomREB"
-    private var condition3 = "AST > $randomAST"
-    private var conditionA = "AST > $randomAST"
-    private var conditionB = "STL > $randomSTL"       //"\"TO\" >= 2"
-    private var conditionC = "POS = '${positions.random()}'"
-    private var queries: List<String> = listOf(
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionA} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionA} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition3} AND ${conditionA} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionB} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionB} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition3} AND ${conditionB} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition1} AND ${conditionC} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition2} AND ${conditionC} ",
-        "SELECT * FROM Players WHERE NAME = ? AND ${condition3} AND ${conditionC} "
+
+    val symbols = listOf(">", ">=", "<", "<=")
+    val stats = listOf("PTS", "REB", "AST", "BLK", "STL")
+
+    // Generate random values for statistics
+    val randomValues = mapOf(
+        "PTS" to Random.nextInt(1, 20),
+        "REB" to Random.nextInt(1, 10),
+        "AST" to Random.nextInt(1, 15),
+        "BLK" to Random.nextInt(1, 5),
+        "STL" to Random.nextInt(1, 5)
+    )
+
+    // Generate a large number of conditions to ensure uniqueness
+    val conditions = List(100) {
+        val randomStat = stats.random()
+        val randomSymbol = symbols.random()
+        val value = randomValues[randomStat] ?: 0
+        "$randomStat $randomSymbol $value"
+    }.distinct()
+
+    // Take 3 unique conditions
+    val uniqueConditions = conditions.shuffled().take(3)
+    val condition1 = uniqueConditions.getOrElse(0) { "Unknown Condition 1" }
+    val condition2 = uniqueConditions.getOrElse(1) { "Unknown Condition 2" }
+    val condition3 = uniqueConditions.getOrElse(2) { "Unknown Condition 3" }
+
+    // Extract used stats from uniqueConditions
+    val usedStats = uniqueConditions.map { it.split(" ")[0] }.toSet()
+
+    // Filter out conditions that contain stats in usedStats
+    val filteredConditions = conditions.filter {
+        val stat = it.split(" ")[0]
+        stat !in usedStats
+    }
+
+    // Take 3 additional conditions that don't contain the used stats
+    val additionalConditionsTaken = filteredConditions.take(3)
+
+
+    // Manually extract conditions from the list
+
+    //TODO conditions A,B,C different than 1,2,3
+    val conditionA = additionalConditionsTaken .getOrElse(0) { "Unknown Condition A" }
+    val conditionB = additionalConditionsTaken .getOrElse(1) { "Unknown Condition B" }
+    val conditionC = additionalConditionsTaken .getOrElse(2) { "Unknown Condition C" }
+
+    // Use these conditions in your queries
+    val queries: List<String> = listOf(
+        "SELECT * FROM Players WHERE NAME = ? AND $condition1 AND $conditionA ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition2 AND $conditionA ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition3 AND $conditionA ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition1 AND $conditionB ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition2 AND $conditionB ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition3 AND $conditionB ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition1 AND $conditionC ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition2 AND $conditionC ",
+        "SELECT * FROM Players WHERE NAME = ? AND $condition3 AND $conditionC "
     )
 
     val conditionMap: Map<String, String> = mapOf(
@@ -165,12 +206,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateConditionTextViews() {
-        conditionTextView1.text = conditionMap[condition1] ?: "Unknown condition"
-        conditionTextView2.text = conditionMap[condition2] ?: "Unknown condition"
-        conditionTextView3.text = conditionMap[condition3] ?: "Unknown condition"
-        conditionTextViewA.text = conditionMap[conditionA] ?: "Unknown condition"
-        conditionTextViewB.text = conditionMap[conditionB] ?: "Unknown condition"
-        conditionTextViewC.text = conditionMap[conditionC] ?: "Unknown condition"
+        conditionTextView1.text =condition1//conditionMap[condition1] ?: "Unknown condition"
+        conditionTextView2.text =condition2//conditionMap[condition2] ?: "Unknown condition"
+        conditionTextView3.text =condition3//conditionMap[condition3] ?: "Unknown condition"
+        conditionTextViewA.text =conditionA//conditionMap[conditionA] ?: "Unknown condition"
+        conditionTextViewB.text =conditionB//conditionMap[conditionB] ?: "Unknown condition"
+        conditionTextViewC.text =conditionC//conditionMap[conditionC] ?: "Unknown condition"
 
 
         adapter = PlayerCursorAdapter(this, null)
@@ -446,8 +487,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-//TODO rng conditions
+//TODO correct mapping
+//TODO rng conditions until found
 //TODO UI -> search and X icon white
 //TODO images or text <-> textView
 //TODO percentages
+//TODO add teams and positions
