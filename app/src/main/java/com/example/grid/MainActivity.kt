@@ -489,6 +489,8 @@ class MainActivity : AppCompatActivity() {
 
 //TODO rng conditions until found
 //TODO UI -> search and X icon white
+
 //TODO images or text <-> textView
-//TODO percentages
 //TODO add teams and positions
+
+//TODO percentages

@@ -15,15 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <ListView
         android:id="@+id/suggestionsListView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/gridLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:layout_constraintVertical_bias="0.0" />
 
     <GridLayout

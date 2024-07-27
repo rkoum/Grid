@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 class PlayerCursorAdapter(context: Context, cursor: Cursor?) : CursorAdapter(context, cursor, 0) {
 
@@ -17,6 +18,11 @@ class PlayerCursorAdapter(context: Context, cursor: Cursor?) : CursorAdapter(con
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val nameTextView = view.findViewById<TextView>(android.R.id.text1)
             val name = cursor.getString(cursor.getColumnIndexOrThrow("NAME"))
+       // nameTextView.setTypeface(nameTextView.typeface, android.graphics.Typeface.BOLD)
+        view.setBackgroundColor(ContextCompat.getColor(context, R.color.semi_transparent_white))
         nameTextView.text = name
+
+
+
     }
 }
