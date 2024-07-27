@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     private val foundPlayers = MutableList<String?>(9) { null }
 
     val symbols = listOf(">", ">=", "<")
-   val positions = listOf("PG ", "SG ", "SF ", "PF ", "C ")
+    val positions = listOf("PG ", "SG ", "SF ", "PF ", "C ")
 
     fun generateConditions(): List<String> {
         val symbols = listOf(">", ">=", "<")
@@ -109,20 +109,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    val finalConditions = generateConditions()
-    // Use these conditions in your queries
+    val firstGen = generateConditions()
+    val finalConditions = firstGen
 
-           val queries: List<String> = listOf(
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[0]} AND ${generateConditions()[3]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[1]} AND ${generateConditions()[3]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[2]} AND ${generateConditions()[3]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[0]} AND ${generateConditions()[4]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[1]} AND ${generateConditions()[4]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[2]} AND ${generateConditions()[4]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[0]} AND ${generateConditions()[5]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[1]} AND ${generateConditions()[5]}",
-            "SELECT * FROM Players WHERE NAME = ? AND ${generateConditions()[2]} AND ${generateConditions()[5]}"
-        )
+    val queries: List<String> = listOf(
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[0]} AND ${finalConditions[3]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[1]} AND ${finalConditions[3]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[2]} AND ${finalConditions[3]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[0]} AND ${finalConditions[4]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[1]} AND ${finalConditions[4]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[2]} AND ${finalConditions[4]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[0]} AND ${finalConditions[5]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[1]} AND ${finalConditions[5]}",
+        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[2]} AND ${finalConditions[5]}"
+    )
 
 
     fun description(stat: String, symbol: String, value: Int): String = when (symbol) {
@@ -205,12 +205,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateConditionTextViews() {
-        conditionTextView1.text = conditionMap[generateConditions()[0]] ?: "Unknown condition"
-        conditionTextView2.text = conditionMap[generateConditions()[1]] ?: "Unknown condition"
-        conditionTextView3.text = conditionMap[generateConditions()[2]] ?: "Unknown condition"
-        conditionTextViewA.text = conditionMap[generateConditions()[3]] ?: "Unknown condition"
-        conditionTextViewB.text = conditionMap[generateConditions()[4]] ?: "Unknown condition"
-        conditionTextViewC.text = conditionMap[generateConditions()[5]] ?: "Unknown condition"
+        conditionTextView1.text = conditionMap[finalConditions[0]] ?: "Unknown condition"
+        conditionTextView2.text = conditionMap[finalConditions[1]] ?: "Unknown condition"
+        conditionTextView3.text = conditionMap[finalConditions[2]] ?: "Unknown condition"
+        conditionTextViewA.text = conditionMap[finalConditions[3]] ?: "Unknown condition"
+        conditionTextViewB.text = conditionMap[finalConditions[4]] ?: "Unknown condition"
+        conditionTextViewC.text = conditionMap[finalConditions[5]] ?: "Unknown condition"
 
 
         adapter = PlayerCursorAdapter(this, null)
@@ -390,7 +390,7 @@ class MainActivity : AppCompatActivity() {
 
                     val label = buttonToLabel[imageButton]
                     label?.text = playerName
-                    label?.visibility=View.VISIBLE
+                    label?.visibility = View.VISIBLE
 
                     searchView.setQuery("", false)
                     searchView.clearFocus()
