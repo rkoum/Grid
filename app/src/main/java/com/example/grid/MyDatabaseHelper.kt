@@ -1,6 +1,7 @@
 package com.example.grid
 
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
@@ -61,5 +62,14 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         outputStream.flush()
         outputStream.close()
         inputStream.close()
+    }
+
+    fun isRecordExists(query: String, selectionArgs: Array<String>? = null): Boolean {
+        val db: SQLiteDatabase = this.readableDatabase
+        val cursor: Cursor = db.rawQuery(query, selectionArgs)
+        val exists = cursor.moveToFirst()
+        cursor.close()
+        db.close()
+        return exists
     }
 }

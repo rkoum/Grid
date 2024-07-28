@@ -22,11 +22,14 @@ import androidx.core.graphics.toColor
 import com.bumptech.glide.Glide
 import kotlin.random.Random
 
+
 class MainActivity : AppCompatActivity() {
     private lateinit var dbHelper: MyDatabaseHelper
     private lateinit var searchView: SearchView
     private lateinit var suggestionsListView: ListView
     private lateinit var adapter: PlayerCursorAdapter
+
+
 
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
@@ -108,7 +111,6 @@ class MainActivity : AppCompatActivity() {
         return listOf(condition1, condition2, condition3, conditionA, conditionB, conditionC)
     }
 
-
     val firstGen = generateConditions()
     val finalConditions = firstGen
 
@@ -123,6 +125,24 @@ class MainActivity : AppCompatActivity() {
         "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[1]} AND ${finalConditions[5]}",
         "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[2]} AND ${finalConditions[5]}"
     )
+
+    fun checkRecords(queries: List<String>, dbHelper: MyDatabaseHelper): Boolean {
+        for (i in 0..8) {
+            val query = queries[i].replace("NAME = ? AND ", "")
+            val recordExists = dbHelper.isRecordExists(query)
+
+            if (!recordExists) {
+                return false
+            }
+        }
+        return true
+    }
+
+
+    private val checkingRecords: Boolean by lazy {
+        checkRecords(queries, MyDatabaseHelper(this))
+    }
+
 
 
     fun description(stat: String, symbol: String, value: Int): String = when (symbol) {
@@ -161,6 +181,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         dbHelper = MyDatabaseHelper(this)
 
+        println(checkingRecords)
+      //  println(finalConditions)
         searchView = findViewById(R.id.searchView)
         suggestionsListView = findViewById(R.id.suggestionsListView)
         searchView.setBackgroundColor(Color.parseColor("#021526"))
@@ -242,10 +264,7 @@ class MainActivity : AppCompatActivity() {
 
         // Handle ListView item click
         fun handleItemClick(
-            position: Int,
-            searchView: SearchView,
-            imageButton: ImageButton,
-            index: Int
+            position: Int, searchView: SearchView, imageButton: ImageButton, index: Int
         ) {
             val cursor = adapter.cursor
             val query = queries[index]
@@ -304,8 +323,7 @@ class MainActivity : AppCompatActivity() {
         val offset = currentPage * pageSize
         val sql = "SELECT * FROM Players WHERE NAME LIKE ? LIMIT ? OFFSET ?"
         Log.d(
-            "MainActivity",
-            "Executing query: $sql with parameters: [%$query%, $pageSize, $offset]"
+            "MainActivity", "Executing query: $sql with parameters: [%$query%, $pageSize, $offset]"
         )
 
         try {
@@ -333,9 +351,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchPlayer(
-        playerNameInput: String,
-        query: String,
-        imageButton: ImageButton
+        playerNameInput: String, query: String, imageButton: ImageButton
     ) {
         var buttonIndexMap = mapOf(
             imageButton1 to 0,
@@ -382,8 +398,7 @@ class MainActivity : AppCompatActivity() {
                     foundPlayers[index] = playerName
 
                     // Load image into ImageButton using Glide
-                    Glide.with(this)
-                        .load(imageUrl)
+                    Glide.with(this).load(imageUrl)
                         // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
                         // .error(R.drawable.error_image) // Optional: error image
                         .into(imageButton)
@@ -476,9 +491,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "Exception occurred while searching for player: ${e.message}")
             e.printStackTrace()
             Toast.makeText(
-                this,
-                "An error occurred while searching for the player",
-                Toast.LENGTH_SHORT
+                this, "An error occurred while searching for the player", Toast.LENGTH_SHORT
             ).show()
         } finally {
             db.close() // Ensure database is closed after use
