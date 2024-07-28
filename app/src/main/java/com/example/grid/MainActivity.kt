@@ -28,8 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var suggestionsListView: ListView
     private lateinit var adapter: PlayerCursorAdapter
-
-
+    private  lateinit var newQueries: List<String>
 
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
@@ -112,25 +111,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     val firstGen = generateConditions()
-    val finalConditions = firstGen
+    val initialConditions = firstGen
 
     val queries: List<String> = listOf(
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[0]} AND ${finalConditions[3]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[1]} AND ${finalConditions[3]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[2]} AND ${finalConditions[3]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[0]} AND ${finalConditions[4]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[1]} AND ${finalConditions[4]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[2]} AND ${finalConditions[4]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[0]} AND ${finalConditions[5]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[1]} AND ${finalConditions[5]}",
-        "SELECT * FROM Players WHERE NAME = ? AND ${finalConditions[2]} AND ${finalConditions[5]}"
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[3]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[3]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[3]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[4]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[4]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[4]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[5]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[5]}",
+        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[5]}"
     )
 
     fun checkRecords(queries: List<String>, dbHelper: MyDatabaseHelper): Boolean {
         for (i in 0..8) {
             val query = queries[i].replace("NAME = ? AND ", "")
+            Log.d("checkRecords", "Executing query: $query")
             val recordExists = dbHelper.isRecordExists(query)
-
+            Log.d("checkRecords", "Query result: $recordExists")
             if (!recordExists) {
                 return false
             }
@@ -138,11 +138,48 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    fun generateValidConditions(dbHelper: MyDatabaseHelper): List<String> {
+        var isValid = false
+        var finalConditions: List<String> = listOf()
+        var loopCounter = 0
+        while (!isValid) {
+            // Generate a new set of conditions
+            loopCounter++ // Increment the counter at the start of each loop
+            Log.d("generateValidConditions", "Loop count: $loopCounter")
+            val newConditions = generateConditions()
+            Log.d("generateValidConditions", "Generated conditions: $newConditions")
+            // Construct the list of queries
+              newQueries = listOf(
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[3]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[3]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[3]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[4]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[4]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[4]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[5]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[5]}",
+                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[5]}"
+            )
+            Log.d("generateValidConditions", "Generated queries: $newQueries")
+            // Check if the generated conditions are valid
+            isValid = checkRecords(newQueries, dbHelper)
+            Log.d("generateValidConditions", "Are conditions valid? $isValid")
+            if (isValid) {
+                finalConditions = newConditions
+            }
+        }
+
+        return finalConditions
+    }
+
 
     private val checkingRecords: Boolean by lazy {
         checkRecords(queries, MyDatabaseHelper(this))
     }
 
+    private val finalConditions: List<String> by lazy {
+        generateValidConditions(MyDatabaseHelper(this))
+    }
 
 
     fun description(stat: String, symbol: String, value: Int): String = when (symbol) {
@@ -182,7 +219,7 @@ class MainActivity : AppCompatActivity() {
         dbHelper = MyDatabaseHelper(this)
 
         println(checkingRecords)
-      //  println(finalConditions)
+        println(finalConditions)
         searchView = findViewById(R.id.searchView)
         suggestionsListView = findViewById(R.id.suggestionsListView)
         searchView.setBackgroundColor(Color.parseColor("#021526"))
@@ -227,6 +264,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateConditionTextViews() {
+        Log.d("updateConditionTextViews", "Final conditions: $finalConditions")
+
+        // Log the mapping of conditions to text views
+        Log.d("updateConditionTextViews", "Condition 1: ${conditionMap[finalConditions[0]] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition 2: ${conditionMap[finalConditions[1]] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition 3: ${conditionMap[finalConditions[2]] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition A: ${conditionMap[finalConditions[3]] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition B: ${conditionMap[finalConditions[4]] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition C: ${conditionMap[finalConditions[5]] ?: "Unknown condition"}")
+
         conditionTextView1.text = conditionMap[finalConditions[0]] ?: "Unknown condition"
         conditionTextView2.text = conditionMap[finalConditions[1]] ?: "Unknown condition"
         conditionTextView3.text = conditionMap[finalConditions[2]] ?: "Unknown condition"
@@ -267,7 +314,7 @@ class MainActivity : AppCompatActivity() {
             position: Int, searchView: SearchView, imageButton: ImageButton, index: Int
         ) {
             val cursor = adapter.cursor
-            val query = queries[index]
+            val query = newQueries[index]
             cursor?.let {
                 if (it.moveToPosition(position)) {
                     val playerName = it.getString(it.getColumnIndexOrThrow("NAME"))
