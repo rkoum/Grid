@@ -58,14 +58,84 @@ class MainActivity : AppCompatActivity() {
     private lateinit var conditionTextViewB: TextView
     private lateinit var conditionTextViewC: TextView
 
+    private lateinit var conditionImageBUttonA: ImageButton
+
+
+
+
+
     private val foundPlayers = MutableList<String?>(9) { null }
 
     val symbols = listOf(">", ">=", "<")
-    val positions = listOf("PG ", "SG ", "SF ", "PF ", "C ")
+    var positions = listOf("%PG%", "%SG%", "%SF%", "%PF%", "%C%").map { "POS LIKE '$it'" }
+    var ethnicities = listOf(
+        "American", "Greek", "Croatian", "Montenegrin", "Albanian",
+        "Lithuanian", "Russian", "Slovenian", "Georgian", "Bulgarian",
+        "Canadian", "British", "Bosnian", "Dutch", "Serbia-Montenegro",
+        "Australian", "French", "Senegalese", "Cypriot", "Swedish",
+        "Latvian", "Serbian", "Ukrainian", "Italian", "Dominican",
+        "Spanish", "Finnish", "Turkish", "Polish", "Nigerian",
+        "New Zealand", "Cameroonian", "Ethiopian", "Uruguayan",
+        "Macedonian", "Costa Rican", "Guinean", "Azerbaijani",
+        "Hungarian", "Jamaican", "Belizean", "Guianan", "Irish",
+        "Puerto Rican", "Israeli", "Ivoirian", "Central African",
+        "Belorussian", "Malian", "Colombian", "Panamanian", "Argentine",
+        "Cuban", "Danish", "Kazakhstani", "Georgian", "Romanian",
+        "Bahamas", "Ghanaian", "Angolan", "Sudanese", "Icelandic"
+    ).map { "ETHNICITY LIKE '%$it%'" }
+
+    // List of team names
+    var teams = listOf(
+        "OFI Iraklio",
+        "Ionikos Lamias",
+        "AEK Athens",
+        "Panathinaikos Athens",
+        "Rethymno Cretan Kings",
+        "Peristeri",
+        "Panellinios BC",
+        "Trikala",
+        "Olympiacos Piraeus",
+        "AEP Olimpiada Patron",
+        "KAO Dramas",
+        "Maroussi",
+        "Kavalas",
+        "Panionios",
+        "Ikaros Esperos",
+        "Trikalla",
+        "Ermis Agias",
+        "Nea Kiffisia",
+        "Ilisiakos",
+        "Kolossos H Hotels",
+        "Sefa Arkadikos",
+        "Koroivos",
+        "Doxa Lefkadas",
+        "PAOK",
+        "Apollon Patras",
+        "Lavrio",
+        "Holargos",
+        "Aris BC",
+        "Kymis",
+        "Promitheas Patras",
+        "AS Karditsas",
+        "Charilaos TM",
+        "AO Ionikos Nikaias",
+        "Iraklis",
+        "Ifaistos limnou",
+        "Panelefsiniakos",
+        "Olympia Larissas",
+        "AEL Larissa",
+        "Egaleo AO",
+        "Makedonikos",
+        "Aons Milonas Athens",
+        "Dafni",
+        "Near-East",
+        "Ment"
+    ).map { "TEAM_NAME LIKE '$it'" }
+
 
     fun generateConditions(): List<String> {
         val symbols = listOf(">", ">=", "<")
-        val stats = listOf("PTS", "REB", "AST", "BLK", "STL")
+        val stats = listOf("PTS", "REB", "AST", "BLK", "STL", "FG", "ThreePT", "FT")
 
         // Generate random values for statistics
         val randomValues = mapOf(
@@ -73,17 +143,26 @@ class MainActivity : AppCompatActivity() {
             "REB" to Random.nextInt(1, 6),
             "AST" to Random.nextInt(1, 4),
             "BLK" to Random.nextInt(1, 2),
-            "STL" to Random.nextInt(1, 2)
+            "STL" to Random.nextInt(1, 2),
+            "FG" to Random.nextInt(35, 100),
+            "ThreePT" to Random.nextInt(35, 100),
+            "FT" to Random.nextInt(35, 100)
         )
 
         // Generate a large number of conditions to ensure uniqueness
-        val conditions = List(100) {
+        var conditions = List(100) {
             val randomStat = stats.random()
             val randomSymbol = symbols.random()
             val value = randomValues[randomStat] ?: 0
             "$randomStat $randomSymbol $value"
         }.distinct()
 
+        val takeEthnicities = ethnicities.shuffled().take(5)
+        val takeTeams = teams.shuffled().take(5)
+
+        conditions += positions
+        conditions += takeEthnicities
+        conditions += takeTeams
         // Take 3 unique conditions
         val uniqueConditions = conditions.shuffled().take(3)
         val condition1 = uniqueConditions.getOrElse(0) { "Unknown Condition 1" }
@@ -114,15 +193,15 @@ class MainActivity : AppCompatActivity() {
     val initialConditions = firstGen
 
     val queries: List<String> = listOf(
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[3]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[3]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[3]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[4]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[4]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[4]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[5]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[5]}",
-        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[5]}"
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[5]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[5]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[5]}"
     )
 
     fun checkRecords(queries: List<String>, dbHelper: MyDatabaseHelper): Boolean {
@@ -149,16 +228,16 @@ class MainActivity : AppCompatActivity() {
             val newConditions = generateConditions()
             Log.d("generateValidConditions", "Generated conditions: $newConditions")
             // Construct the list of queries
-              newQueries = listOf(
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[3]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[3]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[3]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[4]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[4]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[4]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[5]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[5]}",
-                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[5]}"
+            newQueries = listOf(
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[0]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[1]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[2]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[0]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[1]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[2]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[0]} AND ${newConditions[5]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[1]} AND ${newConditions[5]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[2]} AND ${newConditions[5]}"
             )
             Log.d("generateValidConditions", "Generated queries: $newQueries")
             // Check if the generated conditions are valid
@@ -189,25 +268,25 @@ class MainActivity : AppCompatActivity() {
         else -> ""
     }
 
-    val conditionMap: Map<String, String> = (1..15).flatMap { pts ->
-        (1..6).flatMap { reb ->
-            (1..4).flatMap { ast ->
-                (1..2).flatMap { blk ->
-                    (1..2).flatMap { stl ->
-                        symbols.flatMap { symbol ->
-                            listOf(
-                                "PTS $symbol $pts" to description("Points", symbol, pts),
-                                "REB $symbol $reb" to description("Rebounds", symbol, reb),
-                                "AST $symbol $ast" to description("Assists", symbol, ast),
-                                "BLK $symbol $blk" to description("Blocks", symbol, blk),
-                                "STL $symbol $stl" to description("Steal", symbol, stl)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }.toMap()
+//        val conditionMap: Map<String, String> = (1..15).flatMap { pts ->
+//            (1..6).flatMap { reb ->
+//                (1..4).flatMap { ast ->
+//                    (1..2).flatMap { blk ->
+//                        (1..2).flatMap { stl ->
+//                            symbols.flatMap { symbol ->
+//                                listOf(
+//                                    "PTS $symbol $pts" to description("Points", symbol, pts),
+//                                    "REB $symbol $reb" to description("Rebounds", symbol, reb),
+//                                    "AST $symbol $ast" to description("Assists", symbol, ast),
+//                                    "BLK $symbol $blk" to description("Blocks", symbol, blk),
+//                                    "STL $symbol $stl" to description("Steal", symbol, stl)
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }.toMap()
 
     private var currentPage = 0
     private val pageSize = 10
@@ -259,6 +338,9 @@ class MainActivity : AppCompatActivity() {
         conditionTextViewC = findViewById(R.id.conditionTextViewC)
 
 
+        conditionImageBUttonA = findViewById(R.id.conditionImageButtonA)
+
+
         // Update TextViews with current conditions
         updateConditionTextViews()
     }
@@ -267,19 +349,25 @@ class MainActivity : AppCompatActivity() {
         Log.d("updateConditionTextViews", "Final conditions: $finalConditions")
 
         // Log the mapping of conditions to text views
-        Log.d("updateConditionTextViews", "Condition 1: ${conditionMap[finalConditions[0]] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition 2: ${conditionMap[finalConditions[1]] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition 3: ${conditionMap[finalConditions[2]] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition A: ${conditionMap[finalConditions[3]] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition B: ${conditionMap[finalConditions[4]] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition C: ${conditionMap[finalConditions[5]] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition 1: ${finalConditions[0] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition 2: ${finalConditions[1] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition 3: ${finalConditions[2] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition A: ${finalConditions[3] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition B: ${finalConditions[4] ?: "Unknown condition"}")
+        Log.d("updateConditionTextViews", "Condition C: ${finalConditions[5] ?: "Unknown condition"}")
 
-        conditionTextView1.text = conditionMap[finalConditions[0]] ?: "Unknown condition"
-        conditionTextView2.text = conditionMap[finalConditions[1]] ?: "Unknown condition"
-        conditionTextView3.text = conditionMap[finalConditions[2]] ?: "Unknown condition"
-        conditionTextViewA.text = conditionMap[finalConditions[3]] ?: "Unknown condition"
-        conditionTextViewB.text = conditionMap[finalConditions[4]] ?: "Unknown condition"
-        conditionTextViewC.text = conditionMap[finalConditions[5]] ?: "Unknown condition"
+        conditionTextView1.text = finalConditions[0] ?: "Unknown condition"
+        conditionTextView2.text = finalConditions[1] ?: "Unknown condition"
+        conditionTextView3.text = finalConditions[2] ?: "Unknown condition"
+        conditionTextViewA.text = finalConditions[3] ?: "Unknown condition"
+        conditionTextViewB.text = finalConditions[4] ?: "Unknown condition"
+        conditionTextViewC.text = finalConditions[5] ?: "Unknown condition"
+
+
+//        Glide.with(this).load(imageUrl)
+//            // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
+//            // .error(R.drawable.error_image) // Optional: error image
+//            .into(conditionImageBUttonA)
 
 
         adapter = PlayerCursorAdapter(this, null)
@@ -551,10 +639,9 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-//TODO rng conditions until found
+//TODO rng conditions until found fix at least 9
 //TODO UI -> search and X icon white
 
 //TODO images or text <-> textView
-//TODO add teams and positions
-
+//TODO fix mapping
 //TODO percentages

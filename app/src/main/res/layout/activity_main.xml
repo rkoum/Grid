@@ -66,14 +66,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
                 android:textAlignment="center"
-                />
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
 
@@ -102,13 +101,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
         <FrameLayout
@@ -136,13 +135,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
         <FrameLayout
@@ -170,13 +169,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
         <FrameLayout
@@ -204,13 +203,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
         <FrameLayout
@@ -238,13 +237,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
         <FrameLayout
@@ -272,13 +271,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
         <FrameLayout
@@ -306,13 +305,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
         <FrameLayout
@@ -340,13 +339,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="#80000000"
-                android:textColor="#FFFFFF"
-                android:padding="4dp"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="4dp"
                 android:text="Player Name"
-                android:visibility="invisible"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:visibility="invisible" />
         </FrameLayout>
 
 
@@ -394,19 +393,30 @@
 
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/conditionTextViewA"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_row="1"
             android:layout_rowWeight="1"
             android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:gravity="center"
-            android:text="Condition A"
-            android:textColor="@color/white"
+            android:layout_columnWeight="1">
 
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/conditionTextViewA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Condition A"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/conditionImageButtonA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/conditionTextViewB"
