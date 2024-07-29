@@ -114,15 +114,15 @@ class MainActivity : AppCompatActivity() {
     val initialConditions = firstGen
 
     val queries: List<String> = listOf(
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[3]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[3]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[3]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[4]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[4]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[4]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[5]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[5]}",
-        "SELECT * FROM Players WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[5]}"
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[5]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[5]}",
+        "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[5]}"
     )
 
     fun checkRecords(queries: List<String>, dbHelper: MyDatabaseHelper): Boolean {
@@ -150,15 +150,15 @@ class MainActivity : AppCompatActivity() {
             Log.d("generateValidConditions", "Generated conditions: $newConditions")
             // Construct the list of queries
               newQueries = listOf(
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[3]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[3]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[3]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[4]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[4]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[4]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[5]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[5]}",
-                "SELECT * FROM Players WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[5]}"
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[0]} AND ${newConditions[5]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[1]} AND ${newConditions[5]}",
+                "SELECT * FROM Player JOIN Stats ON _id=PLAYER_ID WHERE NAME = ? AND ${newConditions[2]} AND ${newConditions[5]}"
             )
             Log.d("generateValidConditions", "Generated queries: $newQueries")
             // Check if the generated conditions are valid
@@ -288,6 +288,7 @@ class MainActivity : AppCompatActivity() {
         // Set up query text listener for the SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d("MainActivity", "onQueryTextSubmit: $query")
                 query?.let {
                     currentPage = 0 // Reset to the first page
                     updateSuggestions(it)
@@ -296,6 +297,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                Log.d("MainActivity", "onQueryTextChange: $newText")
                 newText?.let {
                     if (it.isNotEmpty()) {
                         currentPage = 0 // Reset to the first page
@@ -313,6 +315,7 @@ class MainActivity : AppCompatActivity() {
         fun handleItemClick(
             position: Int, searchView: SearchView, imageButton: ImageButton, index: Int
         ) {
+            Log.d("MainActivity", "handleItemClick: position=$position, index=$index")
             val cursor = adapter.cursor
             val query = newQueries[index]
             cursor?.let {
@@ -368,7 +371,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "Updating suggestions with query: $query")
         val db = dbHelper.readableDatabase
         val offset = currentPage * pageSize
-        val sql = "SELECT * FROM Players WHERE NAME LIKE ? LIMIT ? OFFSET ?"
+        val sql = "SELECT * FROM Player WHERE NAME LIKE ? LIMIT ? OFFSET ?"
         Log.d(
             "MainActivity", "Executing query: $sql with parameters: [%$query%, $pageSize, $offset]"
         )
@@ -376,6 +379,7 @@ class MainActivity : AppCompatActivity() {
         try {
             val cursor: Cursor? =
                 db.rawQuery(sql, arrayOf("%$query%", pageSize.toString(), offset.toString()))
+            Log.d("MainActivity", "Cursor count: ${cursor?.count}")
             if (cursor != null) {
                 Log.d("MainActivity", "Cursor count: ${cursor.count}")
                 adapter.changeCursor(cursor)
@@ -432,7 +436,7 @@ class MainActivity : AppCompatActivity() {
             val cursor = db.rawQuery(query, arrayOf(playerNameInput))
             if (cursor.moveToFirst()) {
                 val nameIndex = cursor.getColumnIndexOrThrow("NAME")
-                val imageUrlIndex = cursor.getColumnIndexOrThrow("IMAGE_URL")
+                val imageUrlIndex = cursor.getColumnIndexOrThrow("PHOTO")
                 val playerName = cursor.getString(nameIndex)
                 val imageUrl = cursor.getString(imageUrlIndex)
 
