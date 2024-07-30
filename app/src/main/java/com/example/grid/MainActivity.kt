@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var suggestionsListView: ListView
     private lateinit var adapter: PlayerCursorAdapter
-    private  lateinit var newQueries: List<String>
+    private lateinit var newQueries: List<String>
 
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
@@ -58,15 +58,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var conditionTextViewB: TextView
     private lateinit var conditionTextViewC: TextView
 
-    private lateinit var conditionImageBUttonA: ImageButton
-
-
-
+    private lateinit var conditionImageButtonA: ImageButton
 
 
     private val foundPlayers = MutableList<String?>(9) { null }
 
-    val symbols = listOf(">", ">=", "<")
+    val symbols = listOf("<", ">=")
     var positions = listOf("%PG%", "%SG%", "%SF%", "%PF%", "%C%").map { "POS LIKE '$it'" }
     var ethnicities = listOf(
         "American", "Greek", "Croatian", "Montenegrin", "Albanian",
@@ -85,48 +82,48 @@ class MainActivity : AppCompatActivity() {
     ).map { "ETHNICITY LIKE '%$it%'" }
 
     // List of team names
-    var teams = listOf(
+    val teams = listOf(
         "OFI Iraklio",
         "Ionikos Lamias",
         "AEK Athens",
-        "Panathinaikos Athens",
-        "Rethymno Cretan Kings",
+        "Panathinaikos",
+        "Rethymno",
         "Peristeri",
-        "Panellinios BC",
+        "Panellinios",
         "Trikala",
-        "Olympiacos Piraeus",
-        "AEP Olimpiada Patron",
+        "Olympiacos",
+        "Olimpiada Patron",
         "KAO Dramas",
         "Maroussi",
-        "Kavalas",
+        "Kavala",
         "Panionios",
         "Ikaros Esperos",
-        "Trikalla",
+        "Trikala",
         "Ermis Agias",
-        "Nea Kiffisia",
+        "Nea Kifisia",
         "Ilisiakos",
-        "Kolossos H Hotels",
-        "Sefa Arkadikos",
+        "Kolossos Rodou",
+        "Arkadikos",
         "Koroivos",
         "Doxa Lefkadas",
         "PAOK",
         "Apollon Patras",
         "Lavrio",
         "Holargos",
-        "Aris BC",
-        "Kymis",
+        "Aris",
+        "Kymi",
         "Promitheas Patras",
-        "AS Karditsas",
+        "Karditsa",
         "Charilaos TM",
-        "AO Ionikos Nikaias",
+        "Ionikos Nikaias",
         "Iraklis",
-        "Ifaistos limnou",
+        "Ifaistos Limnou",
         "Panelefsiniakos",
         "Olympia Larissas",
         "AEL Larissa",
-        "Egaleo AO",
+        "Egaleo",
         "Makedonikos",
-        "Aons Milonas Athens",
+        "Milonas",
         "Dafni",
         "Near-East",
         "Ment"
@@ -134,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun generateConditions(): List<String> {
-        val symbols = listOf(">", ">=", "<")
+        val symbols = listOf(">=", "<")
         val stats = listOf("PTS", "REB", "AST", "BLK", "STL", "FG", "ThreePT", "FT")
 
         // Generate random values for statistics
@@ -261,32 +258,88 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun description(stat: String, symbol: String, value: Int): String = when (symbol) {
-        ">" -> "Over $value $stat"
-        "<" -> "Under $value $stat"
-        ">=" -> "$value+ $stat"
-        else -> ""
+    fun mapCondition(condition: String): String? {
+        val regex = "(\\w+)\\s*(>=|<|=|LIKE)\\s*'?(%?.+?%?)'?".toRegex()
+        val matchResult = regex.matchEntire(condition) ?: return null
+
+        val (stat, operator, value) = matchResult.destructured
+
+        val positionMap = mapOf(
+            "PG" to "Point Guard",
+            "SG" to "Shooting Guard",
+            "SF" to "Small Forward",
+            "PF" to "Power Forward",
+            "C" to "Center"
+        )
+
+        return when (stat) {
+            "PTS" -> when (operator) {
+                ">=" -> "$value+ Points"
+                "<" -> "Under $value Points"
+                else -> null
+            }
+
+            "AST" -> when (operator) {
+                ">=" -> "$value+ Assists"
+                "<" -> "Under $value Assists"
+                else -> null
+            }
+
+            "FG" -> when (operator) {
+                ">=" -> "$value%+ FG"
+                "<" -> "Under $value% FG"
+                else -> null
+            }
+
+            "REB" -> when (operator) {
+                ">=" -> "$value+ Rebounds"
+                "<" -> "Under $value Rebounds"
+                else -> null
+            }
+
+            "BLK" -> when (operator) {
+                ">=" -> "$value+ Blocks"
+                "<" -> "Under $value Blocks"
+                else -> null
+            }
+
+            "STL" -> when (operator) {
+                ">=" -> "$value+ Steal"
+                "<" -> "Under $value Steal"
+                else -> null
+            }
+
+            "FT" -> when (operator) {
+                ">=" -> "$value%+ FT"
+                "<" -> "Under $value% FT"
+                else -> null
+            }
+
+            "ThreePT" -> when (operator) {
+                ">=" -> "$value%+ 3PT"
+                "<" -> "Under $value% 3PT"
+                else -> null
+            }
+
+            "ETHNICITY" -> when (operator) {
+                "LIKE" -> value.replace("%", "")
+                else -> null
+            }
+
+            "TEAM_NAME" -> when (operator) {
+                "LIKE" -> "$value"
+                else -> null
+            }
+
+            "POS" -> when (operator) {
+                "LIKE" -> positionMap[value.replace("%", "")] ?: "Unknown Position"
+                else -> null
+            }
+
+            else -> null
+        }
     }
 
-//        val conditionMap: Map<String, String> = (1..15).flatMap { pts ->
-//            (1..6).flatMap { reb ->
-//                (1..4).flatMap { ast ->
-//                    (1..2).flatMap { blk ->
-//                        (1..2).flatMap { stl ->
-//                            symbols.flatMap { symbol ->
-//                                listOf(
-//                                    "PTS $symbol $pts" to description("Points", symbol, pts),
-//                                    "REB $symbol $reb" to description("Rebounds", symbol, reb),
-//                                    "AST $symbol $ast" to description("Assists", symbol, ast),
-//                                    "BLK $symbol $blk" to description("Blocks", symbol, blk),
-//                                    "STL $symbol $stl" to description("Steal", symbol, stl)
-//                                )
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }.toMap()
 
     private var currentPage = 0
     private val pageSize = 10
@@ -338,7 +391,7 @@ class MainActivity : AppCompatActivity() {
         conditionTextViewC = findViewById(R.id.conditionTextViewC)
 
 
-        conditionImageBUttonA = findViewById(R.id.conditionImageButtonA)
+        conditionImageButtonA = findViewById(R.id.conditionImageButtonA)
 
 
         // Update TextViews with current conditions
@@ -349,26 +402,57 @@ class MainActivity : AppCompatActivity() {
         Log.d("updateConditionTextViews", "Final conditions: $finalConditions")
 
         // Log the mapping of conditions to text views
-        Log.d("updateConditionTextViews", "Condition 1: ${finalConditions[0] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition 2: ${finalConditions[1] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition 3: ${finalConditions[2] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition A: ${finalConditions[3] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition B: ${finalConditions[4] ?: "Unknown condition"}")
-        Log.d("updateConditionTextViews", "Condition C: ${finalConditions[5] ?: "Unknown condition"}")
+        Log.d(
+            "updateConditionTextViews",
+            "Condition 1: ${mapCondition(finalConditions[0]) ?: "Unknown condition"}"
+        )
+        Log.d(
+            "updateConditionTextViews",
+            "Condition 2: ${mapCondition(finalConditions[1]) ?: "Unknown condition"}"
+        )
+        Log.d(
+            "updateConditionTextViews",
+            "Condition 3: ${mapCondition(finalConditions[2]) ?: "Unknown condition"}"
+        )
+        Log.d(
+            "updateConditionTextViews",
+            "Condition A: ${mapCondition(finalConditions[3]) ?: "Unknown condition"}"
+        )
+        Log.d(
+            "updateConditionTextViews",
+            "Condition B: ${mapCondition(finalConditions[4]) ?: "Unknown condition"}"
+        )
+        Log.d(
+            "updateConditionTextViews",
+            "Condition C: ${mapCondition(finalConditions[5]) ?: "Unknown condition"}"
+        )
 
-        conditionTextView1.text = finalConditions[0] ?: "Unknown condition"
-        conditionTextView2.text = finalConditions[1] ?: "Unknown condition"
-        conditionTextView3.text = finalConditions[2] ?: "Unknown condition"
-        conditionTextViewA.text = finalConditions[3] ?: "Unknown condition"
-        conditionTextViewB.text = finalConditions[4] ?: "Unknown condition"
-        conditionTextViewC.text = finalConditions[5] ?: "Unknown condition"
+        conditionTextView1.text = mapCondition(finalConditions[0]) ?: "Unknown condition"
+        conditionTextView2.text = mapCondition(finalConditions[1]) ?: "Unknown condition"
+        conditionTextView3.text = mapCondition(finalConditions[2]) ?: "Unknown condition"
+        conditionTextViewA.text = mapCondition(finalConditions[3]) ?: "Unknown condition"
+        conditionTextViewB.text = mapCondition(finalConditions[4]) ?: "Unknown condition"
+        conditionTextViewC.text = mapCondition(finalConditions[5]) ?: "Unknown condition"
 
+//        for (i in 0..5) {
+//            val condition = mapCondition(finalConditions[i])?.trim() // Ensure no extra spaces
+//            Log.d("Info", "Mapped condition for finalConditions[$i]: $condition")
+//            if (condition in teams) {
+//                Log.d("Info", "Condition met: ${finalConditions[i]}")
+//                Log.d("Info", "Loading image into ImageView")
+//                Glide.with(this)
+//                    .load("https://www.thesportsdb.com/images/media/team/badge/d1y4z71679144558.png/medium")
+////            .placeholder(R.drawable.placeholder_image)
+////            .error(R.drawable.error_image)
+//                    .into(conditionImageButtonA)
+//                break
+//            } else {
+//                Log.d("Info", "IMAGE NOT LOADED - Condition: $condition")
+//            }
+//        }
 
-//        Glide.with(this).load(imageUrl)
-//            // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
-//            // .error(R.drawable.error_image) // Optional: error image
-//            .into(conditionImageBUttonA)
-
+// Log the list to ensure it contains the expected value
+        Log.d("Info", "Teams list: $teams")
 
         adapter = PlayerCursorAdapter(this, null)
         suggestionsListView.adapter = adapter
@@ -641,7 +725,5 @@ class MainActivity : AppCompatActivity() {
 
 //TODO rng conditions until found fix at least 9
 //TODO UI -> search and X icon white
-
-//TODO images or text <-> textView
-//TODO fix mapping
 //TODO percentages
+//TODO teams photos views
