@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var suggestionsListView: ListView
     private lateinit var adapter: PlayerCursorAdapter
     private lateinit var newQueries: List<String>
+    private var currentPage = 0
+    private val pageSize = 10
+    var offset = currentPage * pageSize
 
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
@@ -59,6 +63,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var conditionTextViewC: TextView
 
     private lateinit var conditionImageButtonA: ImageButton
+    private lateinit var conditionImageButtonB: ImageButton
+    private lateinit var conditionImageButtonC: ImageButton
+    private lateinit var conditionImageButton1: ImageButton
+    private lateinit var conditionImageButton2: ImageButton
+    private lateinit var conditionImageButton3: ImageButton
 
 
     private val foundPlayers = MutableList<String?>(9) { null }
@@ -66,23 +75,72 @@ class MainActivity : AppCompatActivity() {
     val symbols = listOf("<", ">=")
     var positions = listOf("%PG%", "%SG%", "%SF%", "%PF%", "%C%").map { "POS LIKE '$it'" }
     var ethnicities = listOf(
-        "American", "Greek", "Croatian", "Montenegrin", "Albanian",
-        "Lithuanian", "Russian", "Slovenian", "Georgian", "Bulgarian",
-        "Canadian", "British", "Bosnian", "Dutch", "Serbia-Montenegro",
-        "Australian", "French", "Senegalese", "Cypriot", "Swedish",
-        "Latvian", "Serbian", "Ukrainian", "Italian", "Dominican",
-        "Spanish", "Finnish", "Turkish", "Polish", "Nigerian",
-        "New Zealand", "Cameroonian", "Ethiopian", "Uruguayan",
-        "Macedonian", "Costa Rican", "Guinean", "Azerbaijani",
-        "Hungarian", "Jamaican", "Belizean", "Guianan", "Irish",
-        "Puerto Rican", "Israeli", "Ivoirian", "Central African",
-        "Belorussian", "Malian", "Colombian", "Panamanian", "Argentine",
-        "Cuban", "Danish", "Kazakhstani", "Georgian", "Romanian",
-        "Bahamas", "Ghanaian", "Angolan", "Sudanese", "Icelandic"
+        "American",
+        "Greek",
+        "Croatian",
+        "Montenegrin",
+        "Albanian",
+        "Lithuanian",
+        "Russian",
+        "Slovenian",
+        "Georgian",
+        "Bulgarian",
+        "Canadian",
+        "British",
+        "Bosnian",
+        "Dutch",
+        "Serbia-Montenegro",
+        "Australian",
+        "French",
+        "Senegalese",
+        "Cypriot",
+        "Swedish",
+        "Latvian",
+        "Serbian",
+        "Ukrainian",
+        "Italian",
+        "Dominican",
+        "Spanish",
+        "Finnish",
+        "Turkish",
+        "Polish",
+        "Nigerian",
+        "New Zealand",
+        "Cameroonian",
+        "Ethiopian",
+        "Uruguayan",
+        "Macedonian",
+        "Costa Rican",
+        "Guinean",
+        "Azerbaijani",
+        "Hungarian",
+        "Jamaican",
+        "Belizean",
+        "Guianan",
+        "Irish",
+        "Puerto Rican",
+        "Israeli",
+        "Ivoirian",
+        "Central African",
+        "Belorussian",
+        "Malian",
+        "Colombian",
+        "Panamanian",
+        "Argentine",
+        "Cuban",
+        "Danish",
+        "Kazakhstani",
+        "Georgian",
+        "Romanian",
+        "Bahamas",
+        "Ghanaian",
+        "Angolan",
+        "Sudanese",
+        "Icelandic"
     ).map { "ETHNICITY LIKE '%$it%'" }
 
     // List of team names
-    val teams = listOf(
+    val teamList = listOf(
         "OFI Iraklio",
         "Ionikos Lamias",
         "AEK Athens",
@@ -127,7 +185,9 @@ class MainActivity : AppCompatActivity() {
         "Dafni",
         "Near-East",
         "Ment"
-    ).map { "TEAM_NAME LIKE '$it'" }
+    )
+
+    var teams = teamList.map { "TEAM_NAME LIKE '$it'" }
 
 
     fun generateConditions(): List<String> {
@@ -341,15 +401,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private var currentPage = 0
-    private val pageSize = 10
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
         dbHelper = MyDatabaseHelper(this)
-
+        println(dbHelper)
         println(checkingRecords)
         println(finalConditions)
         searchView = findViewById(R.id.searchView)
@@ -392,6 +449,11 @@ class MainActivity : AppCompatActivity() {
 
 
         conditionImageButtonA = findViewById(R.id.conditionImageButtonA)
+        conditionImageButtonB = findViewById(R.id.conditionImageButtonB)
+        conditionImageButtonC = findViewById(R.id.conditionImageButtonC)
+        conditionImageButton1 = findViewById(R.id.conditionImageButton1)
+        conditionImageButton2 = findViewById(R.id.conditionImageButton2)
+        conditionImageButton3 = findViewById(R.id.conditionImageButton3)
 
 
         // Update TextViews with current conditions
@@ -434,25 +496,68 @@ class MainActivity : AppCompatActivity() {
         conditionTextViewB.text = mapCondition(finalConditions[4]) ?: "Unknown condition"
         conditionTextViewC.text = mapCondition(finalConditions[5]) ?: "Unknown condition"
 
-//        for (i in 0..5) {
-//            val condition = mapCondition(finalConditions[i])?.trim() // Ensure no extra spaces
-//            Log.d("Info", "Mapped condition for finalConditions[$i]: $condition")
-//            if (condition in teams) {
-//                Log.d("Info", "Condition met: ${finalConditions[i]}")
-//                Log.d("Info", "Loading image into ImageView")
-//                Glide.with(this)
-//                    .load("https://www.thesportsdb.com/images/media/team/badge/d1y4z71679144558.png/medium")
-////            .placeholder(R.drawable.placeholder_image)
-////            .error(R.drawable.error_image)
-//                    .into(conditionImageButtonA)
-//                break
-//            } else {
-//                Log.d("Info", "IMAGE NOT LOADED - Condition: $condition")
-//            }
-//        }
+        val imageButtonMap = mapOf(
+            finalConditions[0] to conditionImageButton1,
+            finalConditions[1] to conditionImageButton2,
+            finalConditions[2] to conditionImageButton3,
+            finalConditions[3] to conditionImageButtonA,
+            finalConditions[4] to conditionImageButtonB,
+            finalConditions[5] to conditionImageButtonC
+        )
+
+        val imageTextMap = mapOf(
+            finalConditions[0] to conditionTextView1,
+            finalConditions[1] to conditionTextView2,
+            finalConditions[2] to conditionTextView3,
+            finalConditions[3] to conditionTextViewA,
+            finalConditions[4] to conditionTextViewB,
+            finalConditions[5] to conditionTextViewC
+        )
+
+        var db = dbHelper.readableDatabase
+        var teamLogo: String? = null
+
+        for (i in 0..5) {
+            val condition = mapCondition(finalConditions[i])?.trim()
+            Log.d("Info", "Mapped condition for finalConditions[$i]: $condition")
+
+            if (condition in teamList) {
+                Log.d("Info", "Condition met: ${finalConditions[i]}")
+
+
+                val sql = "SELECT * FROM Team WHERE TEAM_NAME = ? LIMIT ? OFFSET ?"
+                val cursor: Cursor? = db.rawQuery(
+                    sql, arrayOf(condition, pageSize.toString(), offset.toString())
+                )
+
+                cursor?.use {
+                    if (it.moveToNext()) {
+                        teamLogo = it.getString(it.getColumnIndexOrThrow("LOGO"))
+                        // You can process other data from the cursor if needed
+                    }
+                }
+
+                // Load image using Glide
+                teamLogo?.let { logoUrl ->
+                    Glide.with(this)
+                        .load(teamLogo)
+                        // Add placeholder and error handling if needed
+                        // .placeholder(R.drawable.placeholder_image)
+                        // .error(R.drawable.error_image)
+                        .into(imageButtonMap[finalConditions[i]] as ImageView)
+                    Log.d("Info", "Loading image into ImageView")
+                }
+
+                imageTextMap[finalConditions[i]]?.visibility = View.INVISIBLE
+                // Exit the loop once the condition is met
+            } else {
+                Log.d("Info", "IMAGE NOT LOADED - Condition: $condition")
+            }
+        }
+
 
 // Log the list to ensure it contains the expected value
-        Log.d("Info", "Teams list: $teams")
+        Log.d("Info", "Teams list: $teamList")
 
         adapter = PlayerCursorAdapter(this, null)
         suggestionsListView.adapter = adapter
@@ -541,14 +646,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateSuggestions(query: String) {
         Log.d("MainActivity", "Updating suggestions with query: $query")
-        val db = dbHelper.readableDatabase
-        val offset = currentPage * pageSize
+        var db = dbHelper.readableDatabase
         val sql = "SELECT * FROM Player WHERE NAME LIKE ? LIMIT ? OFFSET ?"
         Log.d(
             "MainActivity", "Executing query: $sql with parameters: [%$query%, $pageSize, $offset]"
         )
 
         try {
+
             val cursor: Cursor? =
                 db.rawQuery(sql, arrayOf("%$query%", pageSize.toString(), offset.toString()))
             Log.d("MainActivity", "Cursor count: ${cursor?.count}")
@@ -726,4 +831,4 @@ class MainActivity : AppCompatActivity() {
 //TODO rng conditions until found fix at least 9
 //TODO UI -> search and X icon white
 //TODO percentages
-//TODO teams photos views
+//TODO logos 404 fix db
