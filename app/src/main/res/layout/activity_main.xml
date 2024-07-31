@@ -372,8 +372,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter" />
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -388,6 +389,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Condition 1"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -396,7 +398,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter" />
         </FrameLayout>
 
         <FrameLayout
@@ -413,6 +415,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Condition 2"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -421,7 +424,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter" />
         </FrameLayout>
 
         <FrameLayout
@@ -438,6 +441,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Condition 3"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -446,7 +450,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter" />
         </FrameLayout>
 
         <FrameLayout
@@ -463,6 +467,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Condition A"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -471,7 +476,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter" />
         </FrameLayout>
 
         <FrameLayout
@@ -488,6 +493,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="Condition B"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -496,7 +502,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter" />
         </FrameLayout>
 
 
@@ -513,6 +519,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -521,7 +528,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter" />
         </FrameLayout>
 
 
@@ -533,7 +540,7 @@
         android:layout_height="74dp"
         android:layout_marginTop="12dp"
         android:backgroundTint="@android:color/transparent"
-        android:scaleType="centerInside"
+        android:scaleType="fitCenter"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.65"

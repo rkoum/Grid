@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
 import com.bumptech.glide.Glide
 import kotlin.random.Random
+import android.media.MediaPlayer;
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var currentPage = 0
     private val pageSize = 10
     var offset = currentPage * pageSize
+    private var mediaPlayer: MediaPlayer? = null
 
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
@@ -334,50 +336,50 @@ class MainActivity : AppCompatActivity() {
 
         return when (stat) {
             "PTS" -> when (operator) {
-                ">=" -> "$value+ Points"
-                "<" -> "Under $value Points"
+                ">=" -> "$value+ Points (Season)"
+                "<" -> "Under $value Points (Season)"
                 else -> null
             }
 
             "AST" -> when (operator) {
-                ">=" -> "$value+ Assists"
-                "<" -> "Under $value Assists"
+                ">=" -> "$value+ Assists (Season)"
+                "<" -> "Under $value Assists (Season)"
                 else -> null
             }
 
             "FG" -> when (operator) {
-                ">=" -> "$value%+ FG"
-                "<" -> "Under $value% FG"
+                ">=" -> "$value%+ FG (Season)"
+                "<" -> "Under $value% FG (Season)"
                 else -> null
             }
 
             "REB" -> when (operator) {
-                ">=" -> "$value+ Rebounds"
-                "<" -> "Under $value Rebounds"
+                ">=" -> "$value+ Rebounds (Season)"
+                "<" -> "Under $value Rebounds (Season)"
                 else -> null
             }
 
             "BLK" -> when (operator) {
-                ">=" -> "$value+ Blocks"
-                "<" -> "Under $value Blocks"
+                ">=" -> "$value+ Blocks (Season)"
+                "<" -> "Under $value Blocks (Season)"
                 else -> null
             }
 
             "STL" -> when (operator) {
-                ">=" -> "$value+ Steal"
-                "<" -> "Under $value Steal"
+                ">=" -> "$value+ Steal (Season)"
+                "<" -> "Under $value Steal (Season)"
                 else -> null
             }
 
             "FT" -> when (operator) {
-                ">=" -> "$value%+ FT"
-                "<" -> "Under $value% FT"
+                ">=" -> "$value%+ FT (Season)"
+                "<" -> "Under $value% FT (Season)"
                 else -> null
             }
 
             "ThreePT" -> when (operator) {
-                ">=" -> "$value%+ 3PT"
-                "<" -> "Under $value% 3PT"
+                ">=" -> "$value%+ 3PT (Season)"
+                "<" -> "Under $value% 3PT (Season)"
                 else -> null
             }
 
@@ -661,9 +663,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MainActivity", "Cursor count: ${cursor.count}")
                 adapter.changeCursor(cursor)
 
-                if (cursor.count == 0) {
-                    Toast.makeText(this, "No players found", Toast.LENGTH_SHORT).show()
-                }
+
             } else {
                 Log.e("MainActivity", "Cursor is null after query execution")
             }
@@ -676,6 +676,29 @@ class MainActivity : AppCompatActivity() {
             db.close() // Ensure database is closed after use
             Log.d("MainActivity", "Database closed")
         }
+    }
+
+    private fun playSoundBasedOnPlayerName(playerName: String) {
+        // Release any existing MediaPlayer
+        mediaPlayer?.release()
+
+        // Initialize MediaPlayer with the correct sound file based on playerName
+        mediaPlayer = when (playerName) {
+            "Georgios Printezis" -> MediaPlayer.create(this, R.raw.georgiosprintezis)
+            "Kostas Sloukas" -> MediaPlayer.create(this, R.raw.kostassloukas)
+            "Thanasis Antetokounmpo" -> MediaPlayer.create(this, R.raw.thanasisantetokounmpo)
+            "Dimitrios Agravanis" -> MediaPlayer.create(this, R.raw.dimitriosagravanis)
+            "Vangelis Mantzaris" -> MediaPlayer.create(this, R.raw.vangelismantzaris)
+            "Vassilis Spanoulis" -> MediaPlayer.create(this, R.raw.vassilisspanoulis)
+            "Tyler Dorsey" -> MediaPlayer.create(this, R.raw.tylerdorsey)
+            "Kevin Punter" -> MediaPlayer.create(this, R.raw.kevinpunter)
+            "Nick Calathes" -> MediaPlayer.create(this, R.raw.nickcalathes)
+
+            else -> null
+        }
+
+        // Play the sound if MediaPlayer is initialized
+        mediaPlayer?.start()
     }
 
     private fun searchPlayer(
@@ -730,6 +753,9 @@ class MainActivity : AppCompatActivity() {
                         // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
                         // .error(R.drawable.error_image) // Optional: error image
                         .into(imageButton)
+
+
+                    playSoundBasedOnPlayerName(playerName)
 
                     val label = buttonToLabel[imageButton]
                     label?.text = playerName
