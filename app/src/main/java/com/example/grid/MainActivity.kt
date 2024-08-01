@@ -23,6 +23,13 @@ import androidx.core.graphics.toColor
 import com.bumptech.glide.Glide
 import kotlin.random.Random
 import android.media.MediaPlayer;
+import android.widget.Button
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.core.models.Size
+import java.util.concurrent.TimeUnit
+import nl.dionsegijn.konfetti.xml.KonfettiView
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val pageSize = 10
     var offset = currentPage * pageSize
     private var mediaPlayer: MediaPlayer? = null
+    private lateinit var viewKonfetti: KonfettiView
 
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
@@ -46,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageButton8: ImageButton
     private lateinit var imageButton9: ImageButton
     private lateinit var replayButton: ImageButton
+
 
     private lateinit var label1: TextView
     private lateinit var label2: TextView
@@ -414,6 +423,7 @@ class MainActivity : AppCompatActivity() {
         searchView = findViewById(R.id.searchView)
         suggestionsListView = findViewById(R.id.suggestionsListView)
         searchView.setBackgroundColor(Color.parseColor("#021526"))
+        viewKonfetti = findViewById(R.id.konfettiView)
 
         val searchTextView =
             searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
@@ -457,10 +467,11 @@ class MainActivity : AppCompatActivity() {
         conditionImageButton2 = findViewById(R.id.conditionImageButton2)
         conditionImageButton3 = findViewById(R.id.conditionImageButton3)
 
-
         // Update TextViews with current conditions
         updateConditionTextViews()
     }
+
+
 
     private fun updateConditionTextViews() {
         Log.d("updateConditionTextViews", "Final conditions: $finalConditions")
@@ -693,12 +704,26 @@ class MainActivity : AppCompatActivity() {
             "Tyler Dorsey" -> MediaPlayer.create(this, R.raw.tylerdorsey)
             "Kevin Punter" -> MediaPlayer.create(this, R.raw.kevinpunter)
             "Nick Calathes" -> MediaPlayer.create(this, R.raw.nickcalathes)
+            "Georgios Papagiannis" -> MediaPlayer.create(this, R.raw.georgiospapagiannis)
 
             else -> null
         }
 
         // Play the sound if MediaPlayer is initialized
         mediaPlayer?.start()
+    }
+    private fun triggerConfetti() {
+        viewKonfetti.start(
+            Party(
+                speed = 5f,
+                maxSpeed = 30f,
+                damping = 0.9f,
+                spread = 360,
+                colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0x03ff6c),
+                emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100),
+                position = Position.Relative(0.623, 0.48)
+            )
+        )
     }
 
     private fun searchPlayer(
@@ -766,6 +791,7 @@ class MainActivity : AppCompatActivity() {
 
                     if (foundPlayers.all { it != null }) {
                         Toast.makeText(this, "YOU WON", Toast.LENGTH_SHORT).show()
+                        triggerConfetti()
                         imageButton1.isEnabled = false
                         imageButton2.isEnabled = false
                         imageButton3.isEnabled = false

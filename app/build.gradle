@@ -46,4 +46,5 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
+    implementation 'nl.dionsegijn:konfetti-xml:2.0.4'
 }
