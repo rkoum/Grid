@@ -64,7 +64,7 @@
 
             <TextView
                 android:id="@+id/label1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -99,7 +99,7 @@
 
             <TextView
                 android:id="@+id/label2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -133,7 +133,7 @@
 
             <TextView
                 android:id="@+id/label3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -167,7 +167,7 @@
 
             <TextView
                 android:id="@+id/label4"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -201,7 +201,7 @@
 
             <TextView
                 android:id="@+id/label5"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -235,7 +235,7 @@
 
             <TextView
                 android:id="@+id/label6"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -269,7 +269,7 @@
 
             <TextView
                 android:id="@+id/label7"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -303,7 +303,7 @@
 
             <TextView
                 android:id="@+id/label8"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
@@ -337,7 +337,7 @@
 
             <TextView
                 android:id="@+id/label9"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/corners"
