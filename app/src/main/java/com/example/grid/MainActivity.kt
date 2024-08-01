@@ -89,15 +89,15 @@ class MainActivity : AppCompatActivity() {
         "American",
         "Greek",
         "Croatian",
-        "Montenegrin",
-        "Albanian",
+        //     "Montenegrin",
+        //      "Albanian",
         "Lithuanian",
         "Russian",
-        "Slovenian",
-        "Georgian",
-        "Bulgarian",
+        //       "Slovenian",
+        //       "Georgian",
+        //       "Bulgarian",
         "Canadian",
-        "British",
+        //       "British",
         "Bosnian",
         "Dutch",
         "Serbia-Montenegro",
@@ -152,50 +152,50 @@ class MainActivity : AppCompatActivity() {
 
     // List of team names
     val teamList = listOf(
-        "OFI Iraklio",
-        "Ionikos Lamias",
         "AEK Athens",
         "Panathinaikos",
         "Rethymno",
         "Peristeri",
-        "Panellinios",
-        "Trikala",
         "Olympiacos",
-        "Olimpiada Patron",
-        "KAO Dramas",
         "Maroussi",
-        "Kavala",
         "Panionios",
-        "Ikaros Esperos",
-        "Trikala",
-        "Ermis Agias",
         "Nea Kifisia",
-        "Ilisiakos",
         "Kolossos Rodou",
-        "Arkadikos",
         "Koroivos",
-        "Doxa Lefkadas",
         "PAOK",
         "Apollon Patras",
         "Lavrio",
-        "Holargos",
         "Aris",
-        "Kymi",
         "Promitheas Patras",
-        "Karditsa",
-        "Charilaos TM",
-        "Ionikos Nikaias",
-        "Iraklis",
-        "Ifaistos Limnou",
-        "Panelefsiniakos",
-        "Olympia Larissas",
-        "AEL Larissa",
-        "Egaleo",
-        "Makedonikos",
-        "Milonas",
-        "Dafni",
-        "Near-East",
-        "Ment"
+        "Iraklis"
+        //"Ifaistos Limnou",
+        //"Panelefsiniakos",
+        //"Olympia Larissas",
+        //"AEL Larissa",
+        //"Egaleo",
+        //"Makedonikos",
+        //"Milonas",
+        //"Dafni",
+        //"Near-East",
+        //"Ment",
+        //"Karditsa",
+        //"Charilaos TM",
+        //"Ionikos Nikaias",
+        //"Kymi",
+        //"Holargos",
+        //"Doxa Lefkadas",
+        //"Arkadikos",
+        //"Ilisiakos",
+        //"Ikaros Esperos",
+        //"Trikala",
+        //"Ermis Agias",
+        //"OFI Iraklio",
+        //"Ionikos Lamias",
+        //"Panellinios",
+        //"Trikala",
+        //"Olimpiada Patron",
+        //"KAO Dramas",
+        //"Kavala",
     )
 
     var teams = teamList.map { "TEAM_NAME LIKE '$it'" }
@@ -207,14 +207,14 @@ class MainActivity : AppCompatActivity() {
 
         // Generate random values for statistics
         val randomValues = mapOf(
-            "PTS" to Random.nextInt(1, 15),
-            "REB" to Random.nextInt(1, 6),
-            "AST" to Random.nextInt(1, 4),
+            "PTS" to Random.nextInt(4, 20),
+            "REB" to Random.nextInt(4, 8),
+            "AST" to Random.nextInt(3, 5),
             "BLK" to Random.nextInt(1, 2),
             "STL" to Random.nextInt(1, 2),
-            "FG" to Random.nextInt(35, 100),
-            "ThreePT" to Random.nextInt(35, 100),
-            "FT" to Random.nextInt(35, 100)
+            "FG" to Random.nextInt(35, 60),
+            "ThreePT" to Random.nextInt(25, 55),
+            "FT" to Random.nextInt(35, 95)
         )
 
         // Generate a large number of conditions to ensure uniqueness
@@ -261,15 +261,15 @@ class MainActivity : AppCompatActivity() {
     val initialConditions = firstGen
 
     val queries: List<String> = listOf(
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[3]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[3]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[3]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[4]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[4]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[4]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[0]} AND ${initialConditions[5]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[1]} AND ${initialConditions[5]}",
-        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${initialConditions[2]} AND ${initialConditions[5]}"
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[0]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[1]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[2]} AND ${initialConditions[3]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[0]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[1]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[2]} AND ${initialConditions[4]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[0]} AND ${initialConditions[5]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[1]} AND ${initialConditions[5]}",
+        "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND   ${initialConditions[2]} AND ${initialConditions[5]}"
     )
 
     fun checkRecords(queries: List<String>, dbHelper: MyDatabaseHelper): Boolean {
@@ -297,15 +297,15 @@ class MainActivity : AppCompatActivity() {
             Log.d("generateValidConditions", "Generated conditions: $newConditions")
             // Construct the list of queries
             newQueries = listOf(
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[0]} AND ${newConditions[3]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[1]} AND ${newConditions[3]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[2]} AND ${newConditions[3]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[0]} AND ${newConditions[4]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[1]} AND ${newConditions[4]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[2]} AND ${newConditions[4]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[0]} AND ${newConditions[5]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[1]} AND ${newConditions[5]}",
-                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  ${newConditions[2]} AND ${newConditions[5]}"
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[0]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[1]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[2]} AND ${newConditions[3]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[0]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[1]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[2]} AND ${newConditions[4]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[0]} AND ${newConditions[5]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[1]} AND ${newConditions[5]}",
+                "SELECT * FROM Player JOIN Stats ON Player._id=Stats.PLAYER_ID JOIN Squads ON Squads.PLAYER_ID=Stats.PLAYER_ID JOIN Team ON Team.TM_ID=Squads.TEAM_ID WHERE NAME = ? AND  Stats.GAMES_PLAYED >=5 AND  ${newConditions[2]} AND ${newConditions[5]}"
             )
             Log.d("generateValidConditions", "Generated queries: $newQueries")
             // Check if the generated conditions are valid
@@ -470,7 +470,6 @@ class MainActivity : AppCompatActivity() {
         // Update TextViews with current conditions
         updateConditionTextViews()
     }
-
 
 
     private fun updateConditionTextViews() {
@@ -712,6 +711,7 @@ class MainActivity : AppCompatActivity() {
         // Play the sound if MediaPlayer is initialized
         mediaPlayer?.start()
     }
+
     private fun triggerConfetti() {
         viewKonfetti.start(
             Party(
@@ -791,6 +791,9 @@ class MainActivity : AppCompatActivity() {
 
                     if (foundPlayers.all { it != null }) {
                         Toast.makeText(this, "YOU WON", Toast.LENGTH_SHORT).show()
+                        mediaPlayer?.release()
+                        mediaPlayer = MediaPlayer.create(this, R.raw.confetti)
+                        mediaPlayer?.start()
                         triggerConfetti()
                         imageButton1.isEnabled = false
                         imageButton2.isEnabled = false
@@ -881,6 +884,6 @@ class MainActivity : AppCompatActivity() {
 }
 
 //TODO rng conditions until found fix at least 9
-//TODO UI -> search and X icon white
+//TODO search and X icon white
 //TODO percentages
 //TODO logos 404 fix db
