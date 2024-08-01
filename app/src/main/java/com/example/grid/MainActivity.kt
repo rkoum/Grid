@@ -4,6 +4,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -789,6 +791,8 @@ class MainActivity : AppCompatActivity() {
                     searchView.setQuery("", false)
                     searchView.clearFocus()
 
+
+
                     if (foundPlayers.all { it != null }) {
                         Toast.makeText(this, "YOU WON", Toast.LENGTH_SHORT).show()
                         mediaPlayer?.release()
@@ -884,6 +888,5 @@ class MainActivity : AppCompatActivity() {
 }
 
 //TODO rng conditions until found fix at least 9
-//TODO search and X icon white
 //TODO percentages
 //TODO logos 404 fix db

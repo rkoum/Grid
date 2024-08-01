@@ -1,10 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ThemeOverlay.SearchView" parent="">
-        <!-- Text color -->
-        <item name="android:editTextColor">@color/white</item>
-        <!-- Hint text color -->
-        <item name="android:textColorHint">@color/white</item>
+    <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/search_icon</item>
+        <item name="closeIcon">@drawable/close_icon</item>
     </style>
-
 </resources>
