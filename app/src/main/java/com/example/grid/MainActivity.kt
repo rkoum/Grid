@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     private val pageSize = 10
     var offset = currentPage * pageSize
     private var mediaPlayer: MediaPlayer? = null
+    private var isSoundOn = true
     private lateinit var viewKonfetti: KonfettiView
 
     private lateinit var imageButton1: ImageButton
@@ -156,19 +157,19 @@ class MainActivity : AppCompatActivity() {
     val teamList = listOf(
         "AEK Athens",
         "Panathinaikos",
-        "Rethymno",
-        "Peristeri",
+  //      "Rethymno",
+  //      "Peristeri",
         "Olympiacos",
-        "Maroussi",
-        "Panionios",
-        "Nea Kifisia",
-        "Kolossos Rodou",
-        "Koroivos",
+   //     "Maroussi",
+    //    "Panionios",
+    //    "Nea Kifisia",
+     //   "Kolossos Rodou",
+     //   "Koroivos",
         "PAOK",
-        "Apollon Patras",
-        "Lavrio",
+     //   "Apollon Patras",
+     //   "Lavrio",
         "Aris",
-        "Promitheas Patras",
+      //  "Promitheas Patras",
         "Iraklis"
         //"Ifaistos Limnou",
         //"Panelefsiniakos",
@@ -426,7 +427,18 @@ class MainActivity : AppCompatActivity() {
         suggestionsListView = findViewById(R.id.suggestionsListView)
         searchView.setBackgroundColor(Color.parseColor("#021526"))
         viewKonfetti = findViewById(R.id.konfettiView)
+        val soundButton = findViewById<Button>(R.id.soundButton)
 
+        soundButton.setOnClickListener {
+            isSoundOn = !isSoundOn
+            if (isSoundOn) {
+                soundButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_sound_on, 0, 0)
+                mediaPlayer?.setVolume(1.0f, 1.0f)
+            } else {
+                soundButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_sound_off, 0, 0)
+                mediaPlayer?.setVolume(0.0f, 0.0f)
+            }
+        }
         val searchTextView =
             searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
         searchTextView.setTextColor(Color.WHITE) // Set your desired text color
@@ -642,6 +654,7 @@ class MainActivity : AppCompatActivity() {
                 openSearchView()
             }
         }
+
     }
 
     private fun openSearchView() {
@@ -714,6 +727,7 @@ class MainActivity : AppCompatActivity() {
         mediaPlayer?.start()
     }
 
+
     private fun triggerConfetti() {
         viewKonfetti.start(
             Party(
@@ -777,7 +791,7 @@ class MainActivity : AppCompatActivity() {
 
                     // Load image into ImageButton using Glide
                     Glide.with(this).load(imageUrl)
-                        // .placeholder(R.drawable.placeholder_image) // Optional: placeholder image
+                        //placeholder(R.drawable.bball) // Optional: placeholder image
                         // .error(R.drawable.error_image) // Optional: error image
                         .into(imageButton)
 

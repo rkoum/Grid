@@ -67,9 +67,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     fun isRecordExists(query: String, selectionArgs: Array<String>? = null): Boolean {
         val db: SQLiteDatabase = this.readableDatabase
         val cursor: Cursor = db.rawQuery(query, selectionArgs)
-        val exists = cursor.moveToFirst()
+        val exists = cursor.count >= 20
         cursor.close()
         db.close()
         return exists
     }
+
 }

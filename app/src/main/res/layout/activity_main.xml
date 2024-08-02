@@ -58,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
+                android:foreground="@drawable/button_selector"
                 android:backgroundTint="#33FFFFFF"
                 android:contentDescription="@string/button1"
                 android:padding="10dp"
@@ -536,5 +537,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <Button
+        android:id="@+id/soundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="?attr/selectableItemBackground"
+        android:drawableTop="@drawable/ic_sound_on"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/konfettiView"
+        tools:layout_editor_absoluteX="69dp"
+        android:visibility="invisible"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
