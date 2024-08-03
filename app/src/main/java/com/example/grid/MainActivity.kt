@@ -27,12 +27,14 @@ import com.bumptech.glide.Glide
 import kotlin.random.Random
 import android.media.MediaPlayer;
 import android.widget.Button
+import androidx.transition.Visibility
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.core.models.Size
 import java.util.concurrent.TimeUnit
 import nl.dionsegijn.konfetti.xml.KonfettiView
+import org.w3c.dom.Text
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     private var isSoundOn = true
     private lateinit var soundButton: Button
     private lateinit var helpButton: Button
+    private lateinit var youWon: TextView
     private lateinit var viewKonfetti: KonfettiView
 
     private lateinit var imageButton1: ImageButton
@@ -173,35 +176,35 @@ class MainActivity : AppCompatActivity() {
         //   "Lavrio",
         "Aris",
         //  "Promitheas Patras",
-        "Iraklis"
-        //"Ifaistos Limnou",
-        //"Panelefsiniakos",
-        //"Olympia Larissas",
-        //"AEL Larissa",
-        //"Egaleo",
-        //"Makedonikos",
-        //"Milonas",
-        //"Dafni",
-        //"Near-East",
-        //"Ment",
-        //"Karditsa",
-        //"Charilaos TM",
-        //"Ionikos Nikaias",
-        //"Kymi",
-        //"Holargos",
-        //"Doxa Lefkadas",
-        //"Arkadikos",
-        //"Ilisiakos",
-        //"Ikaros Esperos",
-        //"Trikala",
-        //"Ermis Agias",
-        //"OFI Iraklio",
-        //"Ionikos Lamias",
-        //"Panellinios",
-        //"Trikala",
-        //"Olimpiada Patron",
-        //"KAO Dramas",
-        //"Kavala",
+        "Iraklis",
+        "Ifaistos Limnou",
+        "Panelefsiniakos",
+        "Olympia Larissas",
+        "AEL Larissa",
+        "Egaleo",
+        "Makedonikos",
+        "Milonas",
+        "Dafni",
+        "Near-East",
+        "Ment",
+        "Karditsa",
+        "Charilaos TM",
+        "Ionikos Nikaias",
+        "Kymi",
+        "Holargos",
+        "Doxa Lefkadas",
+        "Arkadikos",
+        "Ilisiakos",
+        "Ikaros Esperos",
+        "Trikala",
+        "Ermis Agias",
+        "OFI Iraklio",
+        "Ionikos Lamias",
+        "Panellinios",
+        "Trikala",
+        "Olimpiada Patron",
+        "KAO Dramas",
+        "Kavala"
     )
 
     var teams = teamList.map { "TEAM_NAME LIKE '$it'" }
@@ -244,12 +247,15 @@ class MainActivity : AppCompatActivity() {
         val condition3 = uniqueConditions.getOrElse(2) { "Unknown Condition 3" }
 
         // Extract used stats from uniqueConditions
-        val usedStats = uniqueConditions.map { it.split(" ")[0] }.toSet()
+        var usedStats = uniqueConditions.map { it.split(" ")[0] }.toSet()
+        usedStats+=uniqueConditions.map { it.split(" ")[2] }.toSet()
 
         // Filter out conditions that contain stats in usedStats
         val filteredConditions = conditions.filter {
-            val stat = it.split(" ")[0]
-            stat !in usedStats
+            val parts = it.split(" ")
+            val stat = parts[0]
+            val someOtherPart = parts[2]
+            stat !in usedStats && someOtherPart !in usedStats
         }
 
         // Take 3 additional conditions that don't contain the used stats
@@ -481,6 +487,7 @@ class MainActivity : AppCompatActivity() {
         label9 = findViewById(R.id.label9)
 
         replayButton = findViewById(R.id.replayButton)
+        youWon = findViewById(R.id.youWonId)
 
         // Find TextViews by their ID
         conditionTextView1 = findViewById(R.id.conditionTextView1)
@@ -505,8 +512,10 @@ class MainActivity : AppCompatActivity() {
     private fun showAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Instructions")
-        builder.setMessage("All data are refer to regular seaosons from 2000-2001 onward." +
-                "Every player must have played minimum 2 games")
+        builder.setMessage(
+            "All data are refer to regular seaosons from 2000-2001 onward." +
+                    "Every player must have played minimum 2 games"
+        )
         builder.setPositiveButton("OK") { dialog, _ ->
             dialog.dismiss()
         }
@@ -699,7 +708,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openSearchView() {
-        // Expand the SearchView if it is collapsed
+        // Expand the SearchView if its is collapsed
         searchView.isIconified = false
 
         // Use a Handler to ensure the view has time to be fully rendered
@@ -779,7 +788,7 @@ class MainActivity : AppCompatActivity() {
                 maxSpeed = 30f,
                 damping = 0.9f,
                 spread = 360,
-                colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0x03ff6c),
+                colors = listOf(0x25c4f5, 0xffffff, 0x1723ff, 0xFFD700),
                 emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100),
                 position = Position.Relative(0.623, 0.48)
             )
@@ -852,11 +861,15 @@ class MainActivity : AppCompatActivity() {
 
 
                     if (foundPlayers.all { it != null }) {
-                        Toast.makeText(this, "YOU WON", Toast.LENGTH_SHORT).show()
-                        mediaPlayer?.release()
-                        mediaPlayer = MediaPlayer.create(this, R.raw.confetti)
-                        mediaPlayer?.start()
+                        //    Toast.makeText(this, "YOU WON", Toast.LENGTH_SHORT).show()
+
+                        if (isSoundOn) {
+                            mediaPlayer?.release()
+                            mediaPlayer = MediaPlayer.create(this, R.raw.confetti)
+                            mediaPlayer?.start()
+                        }
                         triggerConfetti()
+
                         imageButton1.isEnabled = false
                         imageButton2.isEnabled = false
                         imageButton3.isEnabled = false
@@ -867,7 +880,16 @@ class MainActivity : AppCompatActivity() {
                         imageButton8.isEnabled = false
                         imageButton9.isEnabled = false
                         replayButton.visibility = ImageButton.VISIBLE
+                        youWon.visibility = TextView.VISIBLE
+
                         replayButton.isEnabled = true
+
+
+
+
+                        suggestionsListView.isEnabled = false
+                        // suggestionsListView.isFocusableInTouchMode = false
+                        //  suggestionsListView.isClickable = false
 
                         replayButton.setOnClickListener {
                             foundPlayers.fill(null)
@@ -911,10 +933,11 @@ class MainActivity : AppCompatActivity() {
                             label8.visibility = View.INVISIBLE
                             label9.visibility = View.INVISIBLE
 
-
+                            suggestionsListView.isEnabled = true
 
                             replayButton.visibility = ImageButton.INVISIBLE
                             replayButton.isEnabled = false
+                            youWon.visibility = TextView.INVISIBLE
                         }
                     }
                 } else {
@@ -941,13 +964,15 @@ class MainActivity : AppCompatActivity() {
         } finally {
             db.close() // Ensure database is closed after use
             Log.d("MainActivity", "Database closed")
+
         }
     }
 }
-
-//TODO rng conditions until found fix at least 9
+//TODO Fix conditions duplicates
+//TODO alert dialog
+//TODO button hover
+//TODO search bar
 //TODO percentages
 //TODO logos 404 fix db
-//TODO search bar
-//TODO button hover
-//TODO alert dialog
+
+
