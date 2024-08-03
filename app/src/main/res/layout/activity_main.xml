@@ -539,15 +539,30 @@
 
     <Button
         android:id="@+id/soundButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
         android:layout_gravity="center"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
         android:background="?attr/selectableItemBackground"
         android:drawableTop="@drawable/ic_sound_on"
+        android:gravity=""
         android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView" />
+
+    <Button
+        android:id="@+id/helpButton"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dp"
+        android:background="?attr/selectableItemBackground"
+        android:drawableTop="@drawable/help_icon"
+        android:text=""
+
         app:layout_constraintBottom_toBottomOf="@+id/konfettiView"
-        tools:layout_editor_absoluteX="69dp"
-        android:visibility="invisible"
-        />
+
+        app:layout_constraintEnd_toEndOf="@+id/gridLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

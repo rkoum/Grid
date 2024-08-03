@@ -1,5 +1,6 @@
 package com.example.grid
 
+import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -45,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     var offset = currentPage * pageSize
     private var mediaPlayer: MediaPlayer? = null
     private var isSoundOn = true
+    private lateinit var soundButton: Button
+    private lateinit var helpButton: Button
     private lateinit var viewKonfetti: KonfettiView
 
     private lateinit var imageButton1: ImageButton
@@ -157,19 +160,19 @@ class MainActivity : AppCompatActivity() {
     val teamList = listOf(
         "AEK Athens",
         "Panathinaikos",
-  //      "Rethymno",
-  //      "Peristeri",
+        //      "Rethymno",
+        //      "Peristeri",
         "Olympiacos",
-   //     "Maroussi",
-    //    "Panionios",
-    //    "Nea Kifisia",
-     //   "Kolossos Rodou",
-     //   "Koroivos",
+        //     "Maroussi",
+        //    "Panionios",
+        //    "Nea Kifisia",
+        //   "Kolossos Rodou",
+        //   "Koroivos",
         "PAOK",
-     //   "Apollon Patras",
-     //   "Lavrio",
+        //   "Apollon Patras",
+        //   "Lavrio",
         "Aris",
-      //  "Promitheas Patras",
+        //  "Promitheas Patras",
         "Iraklis"
         //"Ifaistos Limnou",
         //"Panelefsiniakos",
@@ -427,18 +430,32 @@ class MainActivity : AppCompatActivity() {
         suggestionsListView = findViewById(R.id.suggestionsListView)
         searchView.setBackgroundColor(Color.parseColor("#021526"))
         viewKonfetti = findViewById(R.id.konfettiView)
-        val soundButton = findViewById<Button>(R.id.soundButton)
+        soundButton = findViewById(R.id.soundButton)
+        helpButton = findViewById(R.id.helpButton)
+        // Load the sound state from SharedPreferences
+
+        val sharedPreferences = getSharedPreferences("SoundPreferences", MODE_PRIVATE)
+        isSoundOn = sharedPreferences.getBoolean("isSoundOn", true)
+
+        // Update the button icon and sound state
+        updateSoundState()
 
         soundButton.setOnClickListener {
             isSoundOn = !isSoundOn
-            if (isSoundOn) {
-                soundButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_sound_on, 0, 0)
-                mediaPlayer?.setVolume(1.0f, 1.0f)
-            } else {
-                soundButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_sound_off, 0, 0)
-                mediaPlayer?.setVolume(0.0f, 0.0f)
-            }
+            updateSoundState()
+
+            // Save the sound state to SharedPreferences
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("isSoundOn", isSoundOn)
+            editor.apply()
         }
+
+        val buttonShowAlert: Button = findViewById(R.id.helpButton)
+        buttonShowAlert.setOnClickListener {
+            showAlert()
+        }
+
+
         val searchTextView =
             searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
         searchTextView.setTextColor(Color.WHITE) // Set your desired text color
@@ -483,6 +500,30 @@ class MainActivity : AppCompatActivity() {
 
         // Update TextViews with current conditions
         updateConditionTextViews()
+    }
+
+    private fun showAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Instructions")
+        builder.setMessage("All data are refer to regular seaosons from 2000-2001 onward." +
+                "Every player must have played minimum 2 games")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+    private fun updateSoundState() {
+        Log.d("MainActivity", "updateSoundState: isSoundOn = $isSoundOn")
+        if (isSoundOn) {
+            soundButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_sound_on, 0, 0)
+            mediaPlayer?.setVolume(1.0f, 1.0f)  // Unmute the sound
+            Log.d("MainActivity", "Sound is ON")
+        } else {
+            soundButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_sound_off, 0, 0)
+            mediaPlayer?.setVolume(0.0f, 0.0f)  // Mute the sound
+            Log.d("MainActivity", "Sound is OFF")
+        }
     }
 
 
@@ -705,6 +746,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun playSoundBasedOnPlayerName(playerName: String) {
         // Release any existing MediaPlayer
+
         mediaPlayer?.release()
 
         // Initialize MediaPlayer with the correct sound file based on playerName
@@ -724,7 +766,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Play the sound if MediaPlayer is initialized
-        mediaPlayer?.start()
+        if (isSoundOn) {
+            mediaPlayer?.start()
+        }
     }
 
 
@@ -904,3 +948,6 @@ class MainActivity : AppCompatActivity() {
 //TODO rng conditions until found fix at least 9
 //TODO percentages
 //TODO logos 404 fix db
+//TODO search bar
+//TODO button hover
+//TODO alert dialog
