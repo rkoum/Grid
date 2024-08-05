@@ -29,6 +29,7 @@ import kotlin.random.Random
 import android.media.MediaPlayer;
 import android.text.Html
 import android.view.LayoutInflater
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import androidx.annotation.ContentView
 import androidx.transition.Visibility
@@ -445,6 +446,8 @@ class MainActivity : AppCompatActivity() {
         // Load the sound state from SharedPreferences
 
 
+
+
         val sharedPreferences = getSharedPreferences("SoundPreferences", MODE_PRIVATE)
         isSoundOn = sharedPreferences.getBoolean("isSoundOn", true)
 
@@ -470,6 +473,9 @@ class MainActivity : AppCompatActivity() {
         val searchTextView =
             searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text)
         searchTextView.setTextColor(Color.WHITE) // Set your desired text color
+        val searchAutoComplete =
+            searchView.findViewById<AutoCompleteTextView>(androidx.appcompat.R.id.search_src_text)
+        searchAutoComplete.setHintTextColor(ContextCompat.getColor(this, R.color.white))
 
         imageButton1 = findViewById(R.id.imageButton1)
         imageButton2 = findViewById(R.id.imageButton2)
@@ -524,14 +530,15 @@ class MainActivity : AppCompatActivity() {
         val dialogIcon = contentView.findViewById<ImageView>(R.id.dialogIcon)  // Find the ImageView
 
         dialogTitle.text = "Instructions"
-        dialogMessage.text =  Html.fromHtml(getString(R.string.dialog_message), Html.FROM_HTML_MODE_COMPACT)
+        dialogMessage.text =
+            Html.fromHtml(getString(R.string.dialog_message), Html.FROM_HTML_MODE_COMPACT)
         dialogIcon.setImageResource(R.mipmap.ic_launcher_round)  // Replace with your icon resource
         val alertDialog = AlertDialog.Builder(this)
             .setView(contentView)
 //            .setPositiveButton("OK") { dialog, _ ->
 //                dialog.dismiss()
 //            }
-                .show()
+            .show()
         alertDialog.window?.apply {
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -722,10 +729,22 @@ class MainActivity : AppCompatActivity() {
 
         for ((button, queryIndex) in imageButtons) {
             button.setOnClickListener {
+
+
                 suggestionsListView.setOnItemClickListener { _, _, position, _ ->
                     handleItemClick(position, searchView, button, queryIndex)
                 }
                 openSearchView()
+                searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        // Set button as selected (true state) when search view is focused
+                        button.isSelected = true
+                    } else {
+                        // Set button as unselected (false state) when search view loses focus
+                        button.isSelected = false
+                    }
+                }
+
             }
         }
 
@@ -881,6 +900,8 @@ class MainActivity : AppCompatActivity() {
 
                     searchView.setQuery("", false)
                     searchView.clearFocus()
+ //                   imageButton.setBackgroundColor(R.color.purple_200)
+//                    imageButton.isSelected = !imageButton.isSelected
 
 
 
@@ -993,7 +1014,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 //TODO Fix conditions duplicates
-//TODO alert dialog
 //TODO button hover
 //TODO search bar
 //TODO percentages

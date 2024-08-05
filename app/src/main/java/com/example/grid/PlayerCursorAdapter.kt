@@ -20,7 +20,8 @@ class PlayerCursorAdapter(context: Context, cursor: Cursor?) : CursorAdapter(con
             val name = cursor.getString(cursor.getColumnIndexOrThrow("NAME"))
        // nameTextView.setTypeface(nameTextView.typeface, android.graphics.Typeface.BOLD)
         view.setBackgroundColor(ContextCompat.getColor(context, R.color.semi_transparent_white))
-        nameTextView.text = name
+
+            nameTextView.text = name
 
 
 

@@ -9,13 +9,13 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
+        style="@style/CustomSearchViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:queryHint="Search player here..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        style="@style/CustomSearchViewStyle"
-        android:queryHint="Search here"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ListView
@@ -32,6 +32,7 @@
         android:id="@+id/gridLayout"
         android:layout_width="400dp"
         android:layout_height="400dp"
+        android:layout_margin="10dp"
         android:alignmentMode="alignMargins"
         android:columnCount="4"
         android:rowCount="4"
@@ -40,8 +41,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView"
-        app:layout_constraintVertical_bias="0.3"
-        android:layout_margin="10dp">
+        app:layout_constraintVertical_bias="0.3">
 
         <!-- First Row -->
         <FrameLayout
@@ -58,12 +58,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:foreground="@drawable/button_selector"
-                android:backgroundTint="#33FFFFFF"
                 android:contentDescription="@string/button1"
                 android:padding="10dp"
-                android:scaleType="fitCenter"
-                />
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:id="@+id/label1"
@@ -95,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button2"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -129,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button3"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -163,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button4"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -197,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button5"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -231,7 +228,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button6"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -265,7 +262,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button7"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -299,7 +296,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button8"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -333,7 +330,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/button_outline"
-                android:backgroundTint="#33FFFFFF"
+
                 android:contentDescription="@string/button9"
                 android:padding="10dp"
                 android:scaleType="fitCenter" />
@@ -352,6 +349,7 @@
                 android:textColor="#FFFFFF"
                 android:visibility="invisible" />
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -541,10 +539,10 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/gridLayout"
         app:layout_constraintStart_toStartOf="@+id/gridLayout"
-        app:layout_constraintTop_toBottomOf="@+id/replayButton"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/replayButton" />
 
     <nl.dionsegijn.konfetti.xml.KonfettiView
         android:id="@+id/konfettiView"

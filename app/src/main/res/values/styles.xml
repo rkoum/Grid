@@ -2,6 +2,8 @@
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchIcon">@drawable/search_icon</item>
         <item name="closeIcon">@drawable/close_icon</item>
-
+        <item name="queryHint"> "Search player here..."</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>
