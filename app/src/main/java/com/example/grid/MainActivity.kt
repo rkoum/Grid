@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -26,7 +27,10 @@ import androidx.core.graphics.toColor
 import com.bumptech.glide.Glide
 import kotlin.random.Random
 import android.media.MediaPlayer;
+import android.text.Html
+import android.view.LayoutInflater
 import android.widget.Button
+import androidx.annotation.ContentView
 import androidx.transition.Visibility
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
@@ -176,35 +180,35 @@ class MainActivity : AppCompatActivity() {
         //   "Lavrio",
         "Aris",
         //  "Promitheas Patras",
-        "Iraklis",
-        "Ifaistos Limnou",
-        "Panelefsiniakos",
-        "Olympia Larissas",
-        "AEL Larissa",
-        "Egaleo",
-        "Makedonikos",
-        "Milonas",
-        "Dafni",
-        "Near-East",
-        "Ment",
-        "Karditsa",
-        "Charilaos TM",
-        "Ionikos Nikaias",
-        "Kymi",
-        "Holargos",
-        "Doxa Lefkadas",
-        "Arkadikos",
-        "Ilisiakos",
-        "Ikaros Esperos",
-        "Trikala",
-        "Ermis Agias",
-        "OFI Iraklio",
-        "Ionikos Lamias",
-        "Panellinios",
-        "Trikala",
-        "Olimpiada Patron",
-        "KAO Dramas",
-        "Kavala"
+        "Iraklis"
+//        "Ifaistos Limnou",
+//        "Panelefsiniakos",
+//        "Olympia Larissas",
+//        "AEL Larissa",
+//        "Egaleo",
+//        "Makedonikos",
+//        "Milonas",
+//        "Dafni",
+//        "Near-East",
+//        "Ment",
+//        "Karditsa",
+//        "Charilaos TM",
+//        "Ionikos Nikaias",
+//        "Kymi",
+//        "Holargos",
+//        "Doxa Lefkadas",
+//        "Arkadikos",
+//        "Ilisiakos",
+//        "Ikaros Esperos",
+//        "Trikala",
+//        "Ermis Agias",
+//        "OFI Iraklio",
+//        "Ionikos Lamias",
+//        "Panellinios",
+//        "Trikala",
+//        "Olimpiada Patron",
+//        "KAO Dramas",
+//        "Kavala"
     )
 
     var teams = teamList.map { "TEAM_NAME LIKE '$it'" }
@@ -248,7 +252,7 @@ class MainActivity : AppCompatActivity() {
 
         // Extract used stats from uniqueConditions
         var usedStats = uniqueConditions.map { it.split(" ")[0] }.toSet()
-        usedStats+=uniqueConditions.map { it.split(" ")[2] }.toSet()
+        usedStats += uniqueConditions.map { it.split(" ")[2] }.toSet()
 
         // Filter out conditions that contain stats in usedStats
         val filteredConditions = conditions.filter {
@@ -440,6 +444,7 @@ class MainActivity : AppCompatActivity() {
         helpButton = findViewById(R.id.helpButton)
         // Load the sound state from SharedPreferences
 
+
         val sharedPreferences = getSharedPreferences("SoundPreferences", MODE_PRIVATE)
         isSoundOn = sharedPreferences.getBoolean("isSoundOn", true)
 
@@ -509,18 +514,37 @@ class MainActivity : AppCompatActivity() {
         updateConditionTextViews()
     }
 
+
     private fun showAlert() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Instructions")
-        builder.setMessage(
-            "All data are refer to regular seaosons from 2000-2001 onward." +
-                    "Every player must have played minimum 2 games"
-        )
-        builder.setPositiveButton("OK") { dialog, _ ->
-            dialog.dismiss()
+
+        val contentView = LayoutInflater.from(this).inflate(R.layout.alert_dialog, null, false)
+        val dialogTitle = contentView.findViewById<TextView>(R.id.dialogTitle)
+        val dialogMessage = contentView.findViewById<TextView>(R.id.dialogMessage)
+        val customOkButton = contentView.findViewById<Button>(R.id.customOkButton)
+        val dialogIcon = contentView.findViewById<ImageView>(R.id.dialogIcon)  // Find the ImageView
+
+        dialogTitle.text = "Instructions"
+        dialogMessage.text =  Html.fromHtml(getString(R.string.dialog_message), Html.FROM_HTML_MODE_COMPACT)
+        dialogIcon.setImageResource(R.mipmap.ic_launcher_round)  // Replace with your icon resource
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(contentView)
+//            .setPositiveButton("OK") { dialog, _ ->
+//                dialog.dismiss()
+//            }
+                .show()
+        alertDialog.window?.apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            // Additional window settings if needed
         }
-        builder.show()
+
+        customOkButton.setOnClickListener {
+            // Handle button click here
+            alertDialog.dismiss()  // Dismiss the dialog when button is clicked
+        }
+
     }
+
 
     private fun updateSoundState() {
         Log.d("MainActivity", "updateSoundState: isSoundOn = $isSoundOn")

@@ -10,4 +10,20 @@
     <string name="button7" />
     <string name="button8" />
     <string name="button9" />
+
+    <string name="dialog_message">
+        <![CDATA[
+            <ul>
+            <br/>
+                <li>Try to find  9 players that meet the conditions to win.</li>
+                <br/>
+                <li>All data refer to regular seasons from 2000-2001 onward.</li>
+                <br/>
+                <li>Every player must have played  at least 2 games.</li>
+
+            </ul>
+
+        ]]>
+    </string>
+
 </resources>

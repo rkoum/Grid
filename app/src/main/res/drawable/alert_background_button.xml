@@ -1,0 +1,10 @@
+<!-- res/drawable/alert_background_button.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Background color of the button -->
+    <solid android:color="#03346E" /> <!-- Solid background color -->
+
+    <!-- Rounded corners -->
+    <corners android:radius="10dp" />
+</shape>

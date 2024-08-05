@@ -2,5 +2,6 @@
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchIcon">@drawable/search_icon</item>
         <item name="closeIcon">@drawable/close_icon</item>
+
     </style>
 </resources>
